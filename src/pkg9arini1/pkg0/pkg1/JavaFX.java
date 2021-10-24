@@ -22,40 +22,21 @@ import javafx.stage.Stage;
  * @author lahbib
  */
 public class JavaFX extends Application {
-    
     private Stage primaryStage;
     private Parent parentPage;
     
-
-   
-    
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        this.primaryStage =primaryStage;
-        this.primaryStage.setTitle("9arini");
-        parentPage =FXMLLoader.load(getClass().getResource("/workshopFX/view/Authentification.fxml"));
-        Scene scene =new Scene(parentPage);
-        this.primaryStage.setScene(scene);
-        this.primaryStage.show();
-        /*
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
+    public void start(Stage primaryStage) {
+         try {
+         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/workshopFX/view/Reclamation.fxml"));
+            Scene scene = new Scene(root);
+             primaryStage.setTitle("Interface rec");
         primaryStage.setScene(scene);
-        primaryStage.show();*/
+        primaryStage.show();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage()); 
     }
-
+    }
     /**
      * @param args the command line arguments
      */
