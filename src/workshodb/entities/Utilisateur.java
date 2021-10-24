@@ -362,7 +362,12 @@ public abstract class Utilisateur {
 
     public Utilisateur() {
     }
+
+    public Utilisateur(int utilisateurID) {
+        this.utilisateurID = utilisateurID;
+    }
    
+    
     
     @Override
     public String toString() {
