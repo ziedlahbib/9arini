@@ -33,7 +33,7 @@ public class JavaFX extends Application {
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage =primaryStage;
         this.primaryStage.setTitle("9arini");
-        parentPage =FXMLLoader.load(getClass().getResource("/workshopFX/view/Authentification.fxml"));
+        parentPage =FXMLLoader.load(getClass().getResource("/view/Authentification.fxml"));
         Scene scene =new Scene(parentPage);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();

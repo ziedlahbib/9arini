@@ -17,15 +17,15 @@ import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import workshodb.entities.Admin;
-import workshodb.entities.Entrepreneur;
-import workshodb.entities.Formateur;
-import workshodb.entities.Membre;
-import workshodb.entities.Utilisateur;
-import workshopdb.services.AdminService;
-import workshopdb.services.EntrepreneurService;
-import workshopdb.services.FormateurService;
-import workshopdb.services.MembreService;
+import entities.Admin;
+import entities.Entrepreneur;
+import entities.Formateur;
+import entities.Membre;
+import entities.Utilisateur;
+import services.AdminService;
+import services.EntrepreneurService;
+import services.FormateurService;
+import services.MembreService;
 public class Main {
 
     /**
@@ -122,6 +122,8 @@ public class Main {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             
         }
+        
+        
         /*
         try {
             for(Formateur p6 : productService2.getAllFormateur()){

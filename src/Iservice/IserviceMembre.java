@@ -8,7 +8,7 @@ package Iservice;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
-import workshodb.entities.Membre;
+import entities.Membre;
 
 /**
  *
