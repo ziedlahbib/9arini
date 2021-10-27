@@ -126,7 +126,7 @@ public class ListeEntrepreneurController implements Initializable {
                 zd_utilisateurFonction.setCellValueFactory(new PropertyValueFactory<>("utilisateurFonction"));
                 zd_utilisateurOrganisme.setCellValueFactory(new PropertyValueFactory<>("utilisateurOrganisme"));
                 zd_utilisateurSavoirEtre.setCellValueFactory(new PropertyValueFactory<>("utilisateurSavoirEtre"));
-                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
                 zd_utilisateurMDP.setCellValueFactory(new PropertyValueFactory<>("utilisateurMDP"));
                 zd_utilisateurRole.setCellValueFactory(new PropertyValueFactory<>("utilisateurRole"));
                 zd_nomEntreprise.setCellValueFactory(new PropertyValueFactory<>("nomEntreprise"));
@@ -143,7 +143,7 @@ public class ListeEntrepreneurController implements Initializable {
             ObservableList<Entrepreneur> art1 = FXCollections.observableArrayList(a);
             zd_tableEntrepreneur.setItems(art1);
             zd_utilisateurID.setCellValueFactory(new PropertyValueFactory<>("utilisateurID"));
-            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
             list = FXCollections.observableArrayList(
                     es.getAllEntrepreneur());
             FilteredList<Entrepreneur> filteredData = new FilteredList<>(list, e -> true);

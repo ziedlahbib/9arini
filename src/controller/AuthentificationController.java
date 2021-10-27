@@ -149,7 +149,7 @@ public class AuthentificationController implements Initializable {
             String num ="+216"+p.getUtilisateurphone();
             String codev=zd_codev.getText();
             
-            twiliosend(ACCOUNT_SID, AUTH_TOKEN,num);
+            //twiliosend(ACCOUNT_SID, AUTH_TOKEN,num);
             
         
         }
@@ -194,17 +194,17 @@ public class AuthentificationController implements Initializable {
         try {
             String num ="+216"+connectedUser.getUtilisateurphone();
             String codev=zd_codev.getText();
-            if(twilioverif(ACCOUNT_SID,AUTH_TOKEN,codev,num)){
+            //if(twilioverif(ACCOUNT_SID,AUTH_TOKEN,codev,num)){
             Parent page2 = FXMLLoader.load(getClass().getResource("/view/Acceuil.fxml"));
             Scene scene2 = btn_AcceuilConnexion.getScene();
             scene2.setRoot(page2);
             Stage stage2 = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage2.setScene(scene2);
-            stage2.show();}else{Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Bienvenue :) ");
+            stage2.show();/*}else{Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("alarm :) ");
                         alert.setHeaderText(null);
                         alert.setContentText("erreur de connexion");
-                        alert.show();}
+                        alert.show();}*/
             
         } catch (IOException ex) {
             Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);

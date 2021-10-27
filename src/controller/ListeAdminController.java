@@ -124,7 +124,7 @@ public class ListeAdminController implements Initializable {
                 zd_utilisateurFonction.setCellValueFactory(new PropertyValueFactory<>("utilisateurFonction"));
                 zd_utilisateurOrganisme.setCellValueFactory(new PropertyValueFactory<>("utilisateurOrganisme"));
                 zd_utilisateurSavoirEtre.setCellValueFactory(new PropertyValueFactory<>("utilisateurSavoirEtre"));
-                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
                 zd_utilisateurMDP.setCellValueFactory(new PropertyValueFactory<>("utilisateurMDP"));
                 zd_utilisateurRole.setCellValueFactory(new PropertyValueFactory<>("utilisateurRole"));
                 zd_nomEntreprise.setCellValueFactory(new PropertyValueFactory<>("nomEntreprise"));
@@ -140,7 +140,7 @@ public class ListeAdminController implements Initializable {
             ObservableList<Admin> art1 = FXCollections.observableArrayList(a);
             zd_tableAdmin.setItems(art1);
             zd_utilisateurID.setCellValueFactory(new PropertyValueFactory<>("utilisateurID"));
-            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
             list = FXCollections.observableArrayList(
                     as.getAllAdmin());
             FilteredList<Admin> filteredData = new FilteredList<>(list, e -> true);

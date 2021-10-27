@@ -110,7 +110,7 @@ public class AdminService implements IserviceAdmin{
     public List<Admin> getAllAdmin() throws SQLException {
 
         List<Admin> presonnes = new ArrayList<>();
-        String req = "select * from utilisateur  where  utilisateurRole='Admin'";
+        String req = "select * from utilisateur  where  utilisateurRole LIKE 'Admin'";
         Statement stm = connexion.createStatement();
         ResultSet rst = stm.executeQuery(req);
 

@@ -178,8 +178,8 @@ public class InscriptionController implements Initializable {
     private Label zd_lcodev;
     @FXML
     private Button zd_ok;
-    public static final String ACCOUNT_SID = "AC9330c0499ef2576ac9c88376fbc3ab6d";
-    public static final String AUTH_TOKEN = "ffdcc44bae1d9f4abdb5330a5175c226";
+    public static final String ACCOUNT_SID = "AC04fedb666177e902b410a42d0b4614b9";
+    public static final String AUTH_TOKEN = "e19969ecb5f0279d8539e03f2c414f40";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -263,39 +263,56 @@ public class InscriptionController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-                zd_codev.setVisible(true);
-                zd_lcodev.setVisible(true);
-                zd_ok.setVisible(true);
-
-                //ToggleGroup genre = new ToggleGroup();
-                if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
-                        || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
-                        || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("")
-                        || !isNotselected(zd_homme, zd_femme) || (zd_DDN.getValue()).equals(LocalDate.now()) || (zd_Role.getValue()).equals("")) {
-                    Alert a = new Alert(Alert.AlertType.WARNING);
-                    a.setContentText("Please fill all fields ");
-                    a.setHeaderText(null);
-                    a.showAndWait();
-
-                } else {
-                    if (isInt(zd_numtel)) {
-                        String num = "+216" + zd_numtel.getText();
-                        String codev = zd_codev.getText();
-                        twiliosend(ACCOUNT_SID, AUTH_TOKEN, num);
-                        
-
-                        // }
-                    } else {
-                        System.out.println("put a valid number");
+                try {
+                    zd_codev.setVisible(true);
+                    zd_lcodev.setVisible(true);
+                    zd_ok.setVisible(true);
+                    Boolean verifMembre = verifMembre();
+                    Boolean verifFormateur = verifFormateur();
+                    Boolean verifEntrepreneur = verifEntrepreneur();
+                    Boolean verifAdmin = verifAdmin();
+                    //ToggleGroup genre = new ToggleGroup();
+                    if (verifAdmin == false || verifEntrepreneur == false || verifFormateur == false || verifMembre == false) {
                         Alert alert = new Alert(AlertType.CONFIRMATION);
-                        alert.setTitle("warning !! ");
+                        alert.setTitle("Bienvenue :) ");
                         alert.setHeaderText(null);
-                        alert.setContentText("entrer un numero de telephone valide");
-                        alert.show();
-                    }
-
+                        alert.setContentText("ce email existe");
+                        alert.show();}else {
+                        if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
+                                || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
+                                || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("")
+                                || !isNotselected(zd_homme, zd_femme) || (zd_DDN.getValue()).equals(LocalDate.now()) || (zd_Role.getValue()).equals("")) {
+                            Alert a = new Alert(Alert.AlertType.WARNING);
+                            a.setContentText("Please fill all fields ");
+                            a.setHeaderText(null);
+                            a.showAndWait();
+                            
+                        } else {
+                            if (isInt(zd_numtel)) {
+                                String num = "+216" + zd_numtel.getText();
+                                String codev = zd_codev.getText();
+                                twiliosend(ACCOUNT_SID, AUTH_TOKEN, num);
+                                
+                                
+                                // }
+                            } else {
+                                System.out.println("put a valid number");
+                                Alert alert = new Alert(AlertType.CONFIRMATION);
+                                alert.setTitle("warning !! ");
+                                alert.setHeaderText(null);
+                                alert.setContentText("entrer un numero de telephone valide");
+                                alert.show();
+                            }
+                            
+                        }
+                        
+                    }   } catch (IOException ex) {
+                    Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         });
 
@@ -521,12 +538,13 @@ public class InscriptionController implements Initializable {
      *
      * @param ACCOUNT_SID
      * @param AUTH_TOKEN
+     * @param num
      */
     public static void twiliosend(String ACCOUNT_SID, String AUTH_TOKEN, String num) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Verification verification;
         verification = Verification.creator(
-                "VA86531b1edfb710a199ff28ba552a43c6",
+                "VA43d502871f086dd1dc62cb5fccfef0b2",
                 num,
                 "sms")
                 .create();
@@ -539,7 +557,7 @@ public class InscriptionController implements Initializable {
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         VerificationCheck verificationCheck = VerificationCheck.creator(
-                "VA86531b1edfb710a199ff28ba552a43c6",
+                "VA43d502871f086dd1dc62cb5fccfef0b2",
                 codev)
                 .setTo(num).create();
 
@@ -569,17 +587,9 @@ public class InscriptionController implements Initializable {
                 String Admin = new String("Admin");
                 String Formateur = new String("Formateur");
                 String Entrepreneur = new String("Entrepreneur");
-                Boolean verifMembre = verifMembre();
-                Boolean verifFormateur = verifFormateur();
-                Boolean verifEntrepreneur = verifEntrepreneur();
-                Boolean verifAdmin = verifAdmin();
-                if (verifAdmin == false || verifEntrepreneur == false || verifFormateur == false || verifMembre == false) {
-                    Alert alert = new Alert(AlertType.CONFIRMATION);
-                    alert.setTitle("Bienvenue :) ");
-                    alert.setHeaderText(null);
-                    alert.setContentText("ce email existe");
-                    alert.show();
-                } else {
+                
+                
+               
                     if ((zd_Mdp.getText().equals(zd_CMdp.getText()))) {
                         if (Membre.equals(zd_Role.getValue())) {
                             ms.ajouterMembre(new Membre(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
@@ -629,9 +639,7 @@ public class InscriptionController implements Initializable {
                     } else {
                         zd_LCmdp.setText("les mot de passe doivent etre identique");
                     }
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+                
             } catch (SQLException ex) {
                 Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NoSuchAlgorithmException ex) {

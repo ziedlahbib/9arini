@@ -84,8 +84,8 @@ public class ModePasseOubliéController implements Initializable {
     public TextField getZd_Passwdconn() {
         return zd_Passwdconn;
     }
-    public static final String ACCOUNT_SID = "AC9330c0499ef2576ac9c88376fbc3ab6d";
-    public static final String AUTH_TOKEN = "ffdcc44bae1d9f4abdb5330a5175c226";
+    public static final String ACCOUNT_SID = "AC04fedb666177e902b410a42d0b4614b9";
+    public static final String AUTH_TOKEN = "e19969ecb5f0279d8539e03f2c414f40";
 
     /**
      * Initializes the controller class.
@@ -181,12 +181,13 @@ public class ModePasseOubliéController implements Initializable {
      *
      * @param ACCOUNT_SID
      * @param AUTH_TOKEN
+     * @param num
      */
     public static void twiliosend(String ACCOUNT_SID,String AUTH_TOKEN,String num) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Verification verification;
         verification = Verification.creator(
-                "VA86531b1edfb710a199ff28ba552a43c6",
+                "VA43d502871f086dd1dc62cb5fccfef0b2",
                 num,
                 "sms")
                 .create();
@@ -198,7 +199,7 @@ public class ModePasseOubliéController implements Initializable {
         
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         VerificationCheck verificationCheck = VerificationCheck.creator(
-                "VA86531b1edfb710a199ff28ba552a43c6",
+                "VA43d502871f086dd1dc62cb5fccfef0b2",
                 codev)
             .setTo(num).create();
 

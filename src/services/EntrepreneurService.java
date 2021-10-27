@@ -110,7 +110,7 @@ public class EntrepreneurService implements IserviceEntrpreneur{
     public List<Entrepreneur> getAllEntrepreneur() throws SQLException {
 
         List<Entrepreneur> presonnes = new ArrayList<>();
-        String req = "select * from utilisateur  where  utilisateurRole='Entrepreneur'";
+        String req = "select * from utilisateur  where  utilisateurRole LIKE 'Entrepreneur'";
         Statement stm = connexion.createStatement();
         ResultSet rst = stm.executeQuery(req);
 

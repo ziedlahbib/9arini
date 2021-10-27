@@ -110,7 +110,7 @@ public class MembreService implements IserviceMembre{
     public List<Membre> getAllMembre() throws SQLException {
 
         List<Membre> presonnes = new ArrayList<>();
-        String req = "select * from utilisateur where utilisateurRole='Membre'";
+        String req = "select * from utilisateur where utilisateurRole LIKE 'Membre'";
         Statement stm = connexion.createStatement();
         ResultSet rst = stm.executeQuery(req);
 

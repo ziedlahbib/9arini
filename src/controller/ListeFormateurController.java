@@ -143,8 +143,8 @@ public class ListeFormateurController implements Initializable {
                 zd_utilisateurphone.setCellValueFactory(new PropertyValueFactory<>("utilisateurphone"));
                 zd_utilisateurFonction.setCellValueFactory(new PropertyValueFactory<>("utilisateurFonction"));
                 zd_utilisateurOrganisme.setCellValueFactory(new PropertyValueFactory<>("utilisateurOrganisme"));
-                zd_utilisateurSavoirEtre.setCellValueFactory(new PropertyValueFactory<>("utilisateurSavoirEtre"));
-                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+                zd_utilisateurSavoirEtre.setCellValueFactory(new PropertyValueFactory<>("utilisateurSoftskills"));
+                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
                 zd_utilisateurMDP.setCellValueFactory(new PropertyValueFactory<>("utilisateurMDP"));
                 zd_utilisateurRole.setCellValueFactory(new PropertyValueFactory<>("utilisateurRole"));
                 zd_nomEntreprise.setCellValueFactory(new PropertyValueFactory<>("nomEntreprise"));
@@ -163,7 +163,7 @@ public class ListeFormateurController implements Initializable {
             ObservableList<Formateur> art1 = FXCollections.observableArrayList(a);
             zd_tableFormateur.setItems(art1);
             zd_utilisateurID.setCellValueFactory(new PropertyValueFactory<>("utilisateurID"));
-            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
             list = FXCollections.observableArrayList(
                     fs.getAllFormateur());
             FilteredList<Formateur> filteredData = new FilteredList<>(list, e -> true);

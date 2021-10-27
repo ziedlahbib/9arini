@@ -110,7 +110,7 @@ public class FormateurService implements IserviceFormateur{
     public List<Formateur> getAllFormateur() throws SQLException {
 
         List<Formateur> presonnes = new ArrayList<>();
-        String req = "select * from utilisateur where utilisateurRole='Formateur'";
+        String req = "select * from utilisateur where utilisateurRole LIKE'Formateur'";
         Statement stm = connexion.createStatement();
         ResultSet rst = stm.executeQuery(req);
 

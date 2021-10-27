@@ -141,13 +141,13 @@ public class ListeMembreController implements Initializable {
                 zd_utilisateurNom.setCellValueFactory(new PropertyValueFactory<>("utilisateurNom"));
                 zd_utilisateurGenre.setCellValueFactory(new PropertyValueFactory<>("utilisateurGenre"));
                 zd_utilisateurDDN.setCellValueFactory(new PropertyValueFactory<>("utilisateurDDN"));
-                zd_utilisateurAdresse.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresse"));
+                zd_utilisateurAdresse.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddress"));
                 zd_utilisateurPays.setCellValueFactory(new PropertyValueFactory<>("utilisateurPays"));
                 zd_utilisateurphone.setCellValueFactory(new PropertyValueFactory<>("utilisateurphone"));
                 zd_utilisateurFonction.setCellValueFactory(new PropertyValueFactory<>("utilisateurFonction"));
                 zd_utilisateurOrganisme.setCellValueFactory(new PropertyValueFactory<>("utilisateurOrganisme"));
                 zd_utilisateurSavoirEtre.setCellValueFactory(new PropertyValueFactory<>("utilisateurSavoirEtre"));
-                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+                zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
                 zd_utilisateurMDP.setCellValueFactory(new PropertyValueFactory<>("utilisateurMDP"));
                 zd_utilisateurRole.setCellValueFactory(new PropertyValueFactory<>("utilisateurRole"));
                 zd_nomEntreprise.setCellValueFactory(new PropertyValueFactory<>("nomEntreprise"));
@@ -164,7 +164,7 @@ public class ListeMembreController implements Initializable {
             ObservableList<Membre> art1 = FXCollections.observableArrayList(a);
             zd_tablemembre.setItems(art1);
             zd_utilisateurID.setCellValueFactory(new PropertyValueFactory<>("utilisateurID"));
-            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresseEmail"));
+            zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
             list = FXCollections.observableArrayList(
                     ms.getAllMembre());
             FilteredList<Membre> filteredData = new FilteredList<>(list, e -> true);
