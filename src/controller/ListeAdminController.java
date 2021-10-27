@@ -118,12 +118,12 @@ public class ListeAdminController implements Initializable {
                 zd_utilisateurNom.setCellValueFactory(new PropertyValueFactory<>("utilisateurNom"));
                 zd_utilisateurGenre.setCellValueFactory(new PropertyValueFactory<>("utilisateurGenre"));
                 zd_utilisateurDDN.setCellValueFactory(new PropertyValueFactory<>("utilisateurDDN"));
-                zd_utilisateurAdresse.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresse"));
+                zd_utilisateurAdresse.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddress"));
                 zd_utilisateurPays.setCellValueFactory(new PropertyValueFactory<>("utilisateurPays"));
                 zd_utilisateurphone.setCellValueFactory(new PropertyValueFactory<>("utilisateurphone"));
                 zd_utilisateurFonction.setCellValueFactory(new PropertyValueFactory<>("utilisateurFonction"));
                 zd_utilisateurOrganisme.setCellValueFactory(new PropertyValueFactory<>("utilisateurOrganisme"));
-                zd_utilisateurSavoirEtre.setCellValueFactory(new PropertyValueFactory<>("utilisateurSavoirEtre"));
+                zd_utilisateurSavoirEtre.setCellValueFactory(new PropertyValueFactory<>("utilisateurSoftskills"));
                 zd_utilisateurAdresseEmail.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddressEmail"));
                 zd_utilisateurMDP.setCellValueFactory(new PropertyValueFactory<>("utilisateurMDP"));
                 zd_utilisateurRole.setCellValueFactory(new PropertyValueFactory<>("utilisateurRole"));

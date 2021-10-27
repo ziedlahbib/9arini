@@ -138,7 +138,7 @@ public class ListeFormateurController implements Initializable {
                 zd_utilisateurNom.setCellValueFactory(new PropertyValueFactory<>("utilisateurNom"));
                 zd_utilisateurGenre.setCellValueFactory(new PropertyValueFactory<>("utilisateurGenre"));
                 zd_utilisateurDDN.setCellValueFactory(new PropertyValueFactory<>("utilisateurDDN"));
-                zd_utilisateurAdresse.setCellValueFactory(new PropertyValueFactory<>("utilisateurAdresse"));
+                zd_utilisateurAdresse.setCellValueFactory(new PropertyValueFactory<>("utilisateurAddress"));
                 zd_utilisateurPays.setCellValueFactory(new PropertyValueFactory<>("utilisateurPays"));
                 zd_utilisateurphone.setCellValueFactory(new PropertyValueFactory<>("utilisateurphone"));
                 zd_utilisateurFonction.setCellValueFactory(new PropertyValueFactory<>("utilisateurFonction"));

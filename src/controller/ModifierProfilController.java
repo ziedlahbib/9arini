@@ -146,9 +146,14 @@ public class ModifierProfilController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
+         String Membre = new String("Membre");
+        String Admin = new String("Admin");
+        String Formateur = new String("Formateur");
+        String Entrepreneur = new String("Entrepreneur");
+        if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Admin)){ObservableList<String> list_ne = FXCollections.observableArrayList("Admin","Formateur", "Membre", "Entrepreneur");
+                         zd_Role.setItems(list_ne);}else{
         ObservableList<String> list_ne = FXCollections.observableArrayList("Formateur", "Membre", "Entrepreneur");
-        zd_Role.setItems(list_ne);
+        zd_Role.setItems(list_ne);}
         java.sql.Date r;
         r = new java.sql.Date(AuthentificationController.connectedUser.getUtilisateurDDN().getTime());
         LocalDate date = r.toLocalDate();
@@ -156,10 +161,7 @@ public class ModifierProfilController implements Initializable {
         AdminService as = new AdminService();
         FormateurService fs = new FormateurService();
         EntrepreneurService es = new EntrepreneurService();
-        String Membre = new String("Membre");
-        String Admin = new String("Admin");
-        String Formateur = new String("Formateur");
-        String Entrepreneur = new String("Entrepreneur");
+       
         zd_nom.setText(AuthentificationController.connectedUser.getUtilisateurNom());
         zd_prenom.setText(AuthentificationController.connectedUser.getUtilisateurNom());
         zd_adresse.setText(AuthentificationController.connectedUser.getUtilisateurAddress());
@@ -352,9 +354,10 @@ public class ModifierProfilController implements Initializable {
                                 Logger.getLogger(ModifierProfilController.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
-                        }/*
+                        }
 
                     } else if (Admin.equals(zd_Role.getValue())) {
+                        
                         if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
                                 || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
                                 || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("") ) {
@@ -389,7 +392,7 @@ public class ModifierProfilController implements Initializable {
                                 Logger.getLogger(ModifierProfilController.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
-                        }*/
+                        }
 
                     }
 
