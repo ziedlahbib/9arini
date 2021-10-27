@@ -41,17 +41,15 @@
             <RadioButton fx:id="zd_femme" layoutX="261.0" layoutY="172.0" mnemonicParsing="false" text="femme" toggleGroup="$zd_genre" />
             <TextField fx:id="zd_adresse" layoutX="179.0" layoutY="222.0" prefHeight="26.0" prefWidth="370.0" />
             <TextField fx:id="zd_pays" layoutX="205.0" layoutY="263.0" />
-            <TextField fx:id="zd_Email" layoutX="205.0" layoutY="309.0" />
             <PasswordField fx:id="zd_Mdp" layoutX="205.0" layoutY="339.0" />
             <PasswordField fx:id="zd_CMdp" layoutX="205.0" layoutY="379.0" />
             <ComboBox fx:id="zd_Role" layoutX="176.0" layoutY="560.0" prefWidth="150.0" promptText="Faites votre choix" />
             <ImageView fx:id="zd_Pdp" fitHeight="225.0" fitWidth="186.0" layoutX="633.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
-            <Button fx:id="zd_APdp" layoutX="28.0" layoutY="24.0" mnemonicParsing="false" text="choisir votre photo de profil" />
+            <Button fx:id="zd_APdp" layoutX="28.0" layoutY="24.0" mnemonicParsing="false" onAction="#UploadImageActionPerformed" text="choisir votre photo de profil" />
             <Button fx:id="zd_Modifier" layoutX="594.0" layoutY="816.0" mnemonicParsing="false" text="modifier" />
-            <Button fx:id="zd_annulerModifer" layoutX="736.0" layoutY="816.0" mnemonicParsing="false" text="Annuler" />
+            <Button fx:id="zd_annulerModifer" layoutX="736.0" layoutY="816.0" mnemonicParsing="false" onAction="#annuler" text="Annuler" />
             <Label fx:id="zd_Rolel" layoutX="351.0" layoutY="565.0" prefHeight="18.0" prefWidth="556.0" text="  choisir votre role !!!!" visible="false" />
             <Label layoutX="59.0" layoutY="430.0" text="Numero téléphone :" />
-            <TextField fx:id="zd_numtel" layoutX="205.0" layoutY="426.0" />
             <DatePicker fx:id="zd_DDN" layoutX="205.0" layoutY="479.0" />
             <Label layoutX="49.0" layoutY="483.0" text="Date de naissance :" />
             <TextField fx:id="zd_Org" layoutX="198.0" layoutY="770.0" prefHeight="26.0" prefWidth="513.0" visible="false" />
@@ -70,6 +68,8 @@
             <Button fx:id="zd_upload" layoutX="618.0" layoutY="247.0" mnemonicParsing="false" text="upload image" />
             <Label fx:id="zd_Pdpnom" layoutX="618.0" layoutY="227.0" prefHeight="18.0" prefWidth="167.0" text="nom de l'image" />
             <Label fx:id="zd_LCmdp" layoutX="368.0" layoutY="390.0" prefHeight="18.0" prefWidth="216.0" />
+            <Label fx:id="zd_Email" layoutX="205.0" layoutY="304.0" prefHeight="21.0" prefWidth="187.0" />
+            <Label fx:id="zd_numtel" layoutX="209.0" layoutY="430.0" prefWidth="178.0" />
          </children>
       </AnchorPane>
    </content>

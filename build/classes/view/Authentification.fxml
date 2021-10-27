@@ -19,9 +19,12 @@
       <Label layoutX="90.0" layoutY="183.0" text="E-mail :" />
       <Label layoutX="71.0" layoutY="238.0" text="Mot de passe :" />
       <PasswordField fx:id="AcceuilPasswd" layoutX="187.0" layoutY="234.0" />
-      <Hyperlink fx:id="zd_mdpoublier" layoutX="236.0" layoutY="273.0" text="mot de passe oublier ?" textFill="#00ffff" />
+      <Hyperlink fx:id="zd_mdpoublier" layoutX="236.0" layoutY="273.0" onAction="#Motdepasseoublié" text="mot de passe oublier ?" textFill="#00ffff" />
       <Button fx:id="btn_AcceuilInscription" layoutX="210.0" layoutY="324.0" mnemonicParsing="false" onAction="#goToInscription" text="Inscription" />
       <Button fx:id="btn_AcceuilConnexion" layoutX="311.0" layoutY="324.0" mnemonicParsing="false" onAction="#login" text="se connecter" />
       <TextField fx:id="AcceuilEmail" layoutX="187.0" layoutY="179.0" />
+      <TextField fx:id="zd_codev" layoutX="480.0" layoutY="233.0" prefHeight="31.0" prefWidth="104.0" visible="false" />
+      <Label fx:id="zd_lcodev" layoutX="493.0" layoutY="200.0" prefHeight="21.0" prefWidth="64.0" text="code:" visible="false" />
+      <Button fx:id="zd_ok" layoutX="500.0" layoutY="273.0" mnemonicParsing="false" onAction="#ok" text="ok" visible="false" />
    </children>
 </AnchorPane>

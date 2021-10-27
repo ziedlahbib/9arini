@@ -69,7 +69,10 @@
             <Label fx:id="zd_Pdppath" layoutX="238.0" layoutY="31.0" prefHeight="18.0" prefWidth="498.0" />
             <Button fx:id="zd_upload" layoutX="618.0" layoutY="247.0" mnemonicParsing="false" text="upload image" />
             <Label fx:id="zd_Pdpnom" layoutX="618.0" layoutY="227.0" prefHeight="18.0" prefWidth="167.0" text="nom de l'image" />
-            <Label fx:id="zd_LCmdp" layoutX="423.0" layoutY="384.0" prefHeight="21.0" prefWidth="480.0" />
+            <Label fx:id="zd_LCmdp" layoutX="423.0" layoutY="384.0" prefHeight="21.0" prefWidth="480.0" textAlignment="CENTER" />
+            <TextField fx:id="zd_codev" layoutX="514.0" layoutY="425.0" prefHeight="31.0" prefWidth="104.0" visible="false" />
+            <Label fx:id="zd_lcodev" layoutX="423.0" layoutY="430.0" prefHeight="21.0" prefWidth="64.0" text="code:" visible="false" />
+            <Button fx:id="zd_ok" layoutX="645.0" layoutY="425.0" mnemonicParsing="false" onAction="#ok" text="ok" visible="false" />
          </children>
       </AnchorPane>
    </content>

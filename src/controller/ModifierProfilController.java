@@ -44,6 +44,20 @@ import entities.Admin;
 import entities.Entrepreneur;
 import entities.Formateur;
 import entities.Membre;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.WritableImage;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import services.AdminService;
 import services.EntrepreneurService;
 import services.FormateurService;
@@ -97,13 +111,13 @@ public class ModifierProfilController implements Initializable {
     @FXML
     private ToggleGroup zd_genre;
     @FXML
-    private TextField zd_Email;
+    private Label zd_Email;
     @FXML
     private TextField zd_Mdp;
     @FXML
     private TextField zd_CMdp;
     @FXML
-    private TextField zd_numtel;
+    private Label zd_numtel;
     @FXML
     private DatePicker zd_DDN;
     @FXML
@@ -133,7 +147,7 @@ public class ModifierProfilController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        ObservableList<String> list_ne = FXCollections.observableArrayList("Formateur", "Membre", "Admin", "Entrepreneur");
+        ObservableList<String> list_ne = FXCollections.observableArrayList("Formateur", "Membre", "Entrepreneur");
         zd_Role.setItems(list_ne);
         java.sql.Date r;
         r = new java.sql.Date(AuthentificationController.connectedUser.getUtilisateurDDN().getTime());
@@ -173,7 +187,7 @@ public class ModifierProfilController implements Initializable {
             zd_nomeentrprise.setVisible(false);
             zd_sitewebEntreprise.setVisible(false);
             zd_EntrpreneurUsage.setVisible(false);
-
+/*
         } else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Admin)) {
             zd_Role.setValue(Admin);
             zd_LOrg.setVisible(false);
@@ -187,7 +201,7 @@ public class ModifierProfilController implements Initializable {
             zd_LEntrpreneurUsage.setVisible(false);
             zd_nomeentrprise.setVisible(false);
             zd_sitewebEntreprise.setVisible(false);
-            zd_EntrpreneurUsage.setVisible(false);
+            zd_EntrpreneurUsage.setVisible(false);*/
         } else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Formateur)) {
             zd_Role.setValue(Formateur);
             zd_LOrg.setVisible(true);
@@ -338,7 +352,7 @@ public class ModifierProfilController implements Initializable {
                                 Logger.getLogger(ModifierProfilController.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
-                        }
+                        }/*
 
                     } else if (Admin.equals(zd_Role.getValue())) {
                         if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
@@ -375,7 +389,7 @@ public class ModifierProfilController implements Initializable {
                                 Logger.getLogger(ModifierProfilController.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
-                        }
+                        }*/
 
                     }
 
@@ -448,6 +462,62 @@ public class ModifierProfilController implements Initializable {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+    }
+    @FXML
+    private void annuler(ActionEvent event) throws IOException {
+        try {
+            Parent page1 = FXMLLoader.load(getClass().getResource("/view/Acceuil.fxml"));
+            Scene scene = zd_annulerModifer.getScene();
+            scene.setRoot(page1);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+        }
+    }
+    @FXML
+    private void UploadImageActionPerformed(ActionEvent event) throws FileNotFoundException {
+
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilterJPG
+                = new FileChooser.ExtensionFilter("JPG files (*.JPG)", "*.JPG");
+        FileChooser.ExtensionFilter extFilterjpg
+                = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter extFilterPNG
+                = new FileChooser.ExtensionFilter("PNG files (*.PNG)", "*.PNG");
+        FileChooser.ExtensionFilter extFilterpng
+                = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        fileChooser.getExtensionFilters()
+                .addAll(extFilterJPG, extFilterjpg, extFilterPNG, extFilterpng);
+        //Show open file dialog
+        File file = fileChooser.showOpenDialog(null);
+
+        try {
+            BufferedImage bufferedImage = ImageIO.read(file);
+            WritableImage image = SwingFXUtils.toFXImage(bufferedImage, null);
+            zd_Pdp.setImage(image);
+            zd_Pdp.setFitWidth(200);
+            zd_Pdp.setFitHeight(200);
+            zd_Pdp.scaleXProperty();
+            zd_Pdp.scaleYProperty();
+            zd_Pdp.setSmooth(true);
+            zd_Pdp.setCache(true);
+            FileInputStream fin = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+
+            for (int readNum; (readNum = fin.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum);
+            }
+            byte[] person_image = bos.toByteArray();
+
+        } catch (IOException ex) {
+            Logger.getLogger("ss");
+        }
+        zd_Pdppath.setText(file.getAbsolutePath());
+        zd_Pdpnom.setText(file.getName());
     }
 
 }

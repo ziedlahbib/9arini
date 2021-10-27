@@ -96,6 +96,8 @@ public class ListeEntrepreneurController implements Initializable {
     public ObservableList<Entrepreneur> list;
     @FXML
     private TextField text_recherche;
+    @FXML
+    private Button zd_modfier;
 
     /**
      * Initializes the controller class.
@@ -197,6 +199,24 @@ public class ListeEntrepreneurController implements Initializable {
             stage.show();
         } catch (IOException ex) {
         }
+    }
+
+    @FXML
+    private void mofiierAdmin(ActionEvent event) {
+    
+            
+        
+        try {
+            Parent page2 = FXMLLoader.load(getClass().getResource("/view/AjouterAdmin.fxml"));
+            Scene scene2 = zd_modfier.getScene();
+            scene2.setRoot(page2);
+            Stage stage2 = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage2.setScene(scene2);
+            stage2.show();
+        } catch (IOException ex) {
+            Logger.getLogger(ListeAdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
 }

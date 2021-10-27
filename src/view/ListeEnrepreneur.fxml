@@ -55,6 +55,7 @@
                               <Button fx:id="zd_retour" layoutX="28.0" layoutY="82.0" mnemonicParsing="false" onAction="#retour" prefHeight="31.0" prefWidth="83.0" text="retour" />
                               <Button fx:id="zd_supp" layoutX="26.0" layoutY="151.0" mnemonicParsing="false" onAction="#supprimerMembre" text="supprimer" />
                               <TextField fx:id="text_recherche" />
+                              <Button fx:id="zd_modfier" layoutX="26.0" layoutY="236.0" mnemonicParsing="false" onAction="#mofiierAdmin" prefHeight="31.0" prefWidth="88.0" text="modifier" />
                            </children>
                         </AnchorPane>
                     </content>

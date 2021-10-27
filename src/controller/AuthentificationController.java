@@ -5,7 +5,6 @@
  */
 package controller;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -33,138 +32,195 @@ import entities.Admin;
 import entities.Membre;
 import entities.Utilisateur;
 import utils.MyDB;
+import com.twilio.Twilio;
+import com.twilio.rest.verify.v2.service.Verification;
+import com.twilio.rest.verify.v2.service.VerificationCheck;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 
-   
-    
 /**
  * FXML Controller class
  *
  * @author lahbib
  */
-public class AuthentificationController implements Initializable  {
+public class AuthentificationController implements Initializable {
+
+    @FXML
+    private Button zd_ok;
+    private TextField zd_numtel;
+    @FXML
+    private Hyperlink zd_mdpoublier;
+
     
-    
-    public static Utilisateur connectedUser;
 
     public AuthentificationController(TextField AcceuilEmail, TextField AcceuilPasswd) {
         this.AcceuilEmail = AcceuilEmail;
         this.AcceuilPasswd = AcceuilPasswd;
     }
-    
-    
-    public AuthentificationController() throws IOException, SQLException, NoSuchAlgorithmException  {
-         
-   
+
+    public AuthentificationController() throws IOException, SQLException, NoSuchAlgorithmException {
+
         connexion = MyDB.getInstance().getConnection();
     }
     Connection connexion;
-   
-    
-    
-     
-         @FXML
+    public static Utilisateur connectedUser;
+    @FXML
+    private TextField zd_codev;
+    @FXML
+    private Label zd_lcodev;
+    @FXML
     private Button btn_AcceuilInscription;
-     @FXML
+    @FXML
     private Button btn_AcceuilConnexion;
-     @FXML
+    @FXML
     private TextField AcceuilEmail;
-      @FXML
+    @FXML
     private TextField AcceuilPasswd;
-      @FXML 
-    private Hyperlink zd_mdpoublier;
-      
-      private TextField zd_emailcon= AcceuilEmail;
-      private TextField zd_Passwdconn=AcceuilPasswd;
+
+    private TextField zd_emailcon = AcceuilEmail;
+    private TextField zd_Passwdconn = AcceuilPasswd;
 
     public TextField getZd_emailcon() {
         return zd_emailcon;
     }
 
-   
-
     public TextField getZd_Passwdconn() {
         return zd_Passwdconn;
     }
+    public static final String ACCOUNT_SID = "AC9330c0499ef2576ac9c88376fbc3ab6d";
+    public static final String AUTH_TOKEN = "ffdcc44bae1d9f4abdb5330a5175c226";
 
-
-      
-      
-      
-      
-
-    
-      
     /**
      * Initializes the controller class.
-     * @param 
-     * @param 
+     *
+     * @param
+     * @param
      */
-      
     // TODO
-            
-            
     @Override
-    public void initialize(URL url, ResourceBundle rb)  {
-      
-       
-    }    
+    public void initialize(URL url, ResourceBundle rb) {
+       }
     @FXML
-    private void goToInscription(ActionEvent event) throws IOException{
-    try{
-    Parent page1=FXMLLoader.load(getClass().getResource("/view/Inscription.fxml"));
-    Scene scene =btn_AcceuilInscription.getScene();
-    scene.setRoot(page1);
-    Stage stage =(Stage) ((Node) event.getSource()).getScene().getWindow();
-    stage.setScene(scene);
-    stage.show();
-    }catch (IOException ex){
+    private void goToInscription(ActionEvent event) throws IOException {
+        try {
+            Parent page1 = FXMLLoader.load(getClass().getResource("/view/Inscription.fxml"));
+            Scene scene = btn_AcceuilInscription.getScene();
+            scene.setRoot(page1);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+        }
     }
-    }
+
     @FXML
-    private void login(ActionEvent event)throws IOException, SQLException, NoSuchAlgorithmException{
-        String req ="SELECT * from utilisateur WHERE utilisateurAdresseEmail LIKE '"+AcceuilEmail.getText()+"' and utilisateurMDP LIKE '"+hashmdp(AcceuilPasswd.getText())+"' ";
+    private void login(ActionEvent event) throws IOException, SQLException, NoSuchAlgorithmException {
+        zd_codev.setVisible(true);
+        zd_lcodev.setVisible(true);
+        zd_ok.setVisible(true);
+        String req = "SELECT * from utilisateur WHERE utilisateurAdresseEmail LIKE '" + AcceuilEmail.getText() + "' and utilisateurMDP LIKE '" + hashmdp(AcceuilPasswd.getText()) + "' ";
         Statement stm = connexion.createStatement();
         ResultSet rst = stm.executeQuery(req);
-        
+
         while (rst.next()) {
-           
-                    Admin p = new Admin(rst.getInt("utilisateurID")
-                    , rst.getInt("utilisateurphone")
-                    , rst.getString("utilisateurPdp")
-                    , rst.getString("utilisateurNom")
-                    , rst.getString("utilisateurPrenom")
-                    , rst.getString("utilisateurAdresse")
-                    , rst.getString("utilisateurPays")
-                    , rst.getString("utilisateurGenre")
-                    , rst.getString("utilisateurAdresseEmail")
-                    , rst.getString("utilisateurMDP")
-                    , rst.getString("utilisateurRole")
-                    , rst.getString("utilisateurOrganisme")
-                    , rst.getString("utilisateurFonction")
-                    , rst.getString("utilisateurSavoirEtre")
-                    , rst.getString("nomEntreprise")
-                    , rst.getString("EntrepreneurSiteWeb")
-                    , rst.getString("EntrepreneurUsage")
-                    , rst.getDate("utilisateurDDN"));
-                            
+
+            Admin p = new Admin(rst.getInt("utilisateurID"),
+                    rst.getInt("utilisateurphone"),
+                    rst.getString("utilisateurPdp"),
+                    rst.getString("utilisateurNom"),
+                    rst.getString("utilisateurPrenom"),
+                    rst.getString("utilisateurAdresse"),
+                    rst.getString("utilisateurPays"),
+                    rst.getString("utilisateurGenre"),
+                    rst.getString("utilisateurAdresseEmail"),
+                    rst.getString("utilisateurMDP"),
+                    rst.getString("utilisateurRole"),
+                    rst.getString("utilisateurOrganisme"),
+                    rst.getString("utilisateurFonction"),
+                    rst.getString("utilisateurSavoirEtre"),
+                    rst.getString("nomEntreprise"),
+                    rst.getString("EntrepreneurSiteWeb"),
+                    rst.getString("EntrepreneurUsage"),
+                    rst.getDate("utilisateurDDN"));
+
+            AuthentificationController.connectedUser = p;
+                
+
+            String num ="+216"+p.getUtilisateurphone();
+            String codev=zd_codev.getText();
             
-            AuthentificationController.connectedUser=p;
+            twiliosend(ACCOUNT_SID, AUTH_TOKEN,num);
             
         
+        }
+    }
+
+   
+
+    /**
+     *
+     * @param ACCOUNT_SID
+     * @param AUTH_TOKEN
+     */
+    public static void twiliosend(String ACCOUNT_SID,String AUTH_TOKEN,String num) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Verification verification;
+        verification = Verification.creator(
+                "VA86531b1edfb710a199ff28ba552a43c6",
+                num,
+                "sms")
+                .create();
+
+        System.out.println(verification.getStatus());
+    }
+    public static boolean twilioverif(String ACCOUNT_SID,String AUTH_TOKEN,String codev,String num){
+        boolean verif=false;
+        
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        VerificationCheck verificationCheck = VerificationCheck.creator(
+                "VA86531b1edfb710a199ff28ba552a43c6",
+                codev)
+            .setTo(num).create();
+
+        System.out.println(verificationCheck.getStatus());
+    if((verificationCheck.getStatus()).equals("approved"))
+        verif =true;
+    else return false;
+    return verif;
+    }
+    @FXML
+    private void ok(ActionEvent event){
         try {
+            String num ="+216"+connectedUser.getUtilisateurphone();
+            String codev=zd_codev.getText();
+            if(twilioverif(ACCOUNT_SID,AUTH_TOKEN,codev,num)){
             Parent page2 = FXMLLoader.load(getClass().getResource("/view/Acceuil.fxml"));
             Scene scene2 = btn_AcceuilConnexion.getScene();
             scene2.setRoot(page2);
             Stage stage2 = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage2.setScene(scene2);
-            stage2.show();
+            stage2.show();}else{Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Bienvenue :) ");
+                        alert.setHeaderText(null);
+                        alert.setContentText("erreur de connexion");
+                        alert.show();}
+            
+        } catch (IOException ex) {
+            Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @FXML
+    private void Motdepasseoublié(ActionEvent event) throws IOException {
+        try {
+            Parent page1 = FXMLLoader.load(getClass().getResource("/view/MotdePasseOublié.fxml"));
+            Scene scene = zd_mdpoublier.getScene();
+            scene.setRoot(page1);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException ex) {
         }
-        }
-       
     }
-   
-
     private String hashmdp(String mdp) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(mdp.getBytes());
@@ -174,22 +230,19 @@ public class AuthentificationController implements Initializable  {
         //convertir le tableau de bits en une format hexadécimal - méthode 1
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < byteData.length; i++) {
-         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
         }
-
-        
 
         //convertir le tableau de bits en une format hexadécimal - méthode 2
         StringBuffer hexString = new StringBuffer();
-     for (int i=0;i<byteData.length;i++) {
-      String hex=Integer.toHexString(0xff & byteData[i]);
-          if(hex.length()==1) hexString.append('0');
-          hexString.append(hex);
-     }
-     
-    
-       return hexString.toString();
+        for (int i = 0; i < byteData.length; i++) {
+            String hex = Integer.toHexString(0xff & byteData[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
     }
 }
-    
-

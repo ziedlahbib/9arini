@@ -50,7 +50,9 @@ public class AcceuilController implements Initializable {
     private Hyperlink zd_deconn;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         String Admin = new String("Admin");
+        zd_urlprofil.setText(AuthentificationController.connectedUser.getUtilisateurNom());
         if(Admin.equals(AuthentificationController.connectedUser.getUtilisateurRole())){
         zd_listeAdmin.setVisible(true);
         zd_listeEntrepreneur.setVisible(true);

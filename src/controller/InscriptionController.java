@@ -5,6 +5,16 @@
  */
 package controller;
 
+import com.mysql.jdbc.log.Log;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import com.twilio.Twilio;
+import com.twilio.rest.verify.v2.service.Verification;
+import com.twilio.rest.verify.v2.service.VerificationCheck;
+import static controller.AuthentificationController.ACCOUNT_SID;
+import static controller.AuthentificationController.AUTH_TOKEN;
+import static controller.AuthentificationController.connectedUser;
+import static controller.AuthentificationController.twiliosend;
+import static controller.AuthentificationController.twilioverif;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -77,6 +87,7 @@ import entities.Admin;
 import entities.Entrepreneur;
 import entities.Formateur;
 import entities.Membre;
+import java.net.HttpURLConnection;
 import services.AdminService;
 import services.EntrepreneurService;
 import services.FormateurService;
@@ -161,12 +172,20 @@ public class InscriptionController implements Initializable {
     private RadioButton zd_femme;
     @FXML
     private Button zd_APdp;
+    @FXML
+    private TextField zd_codev;
+    @FXML
+    private Label zd_lcodev;
+    @FXML
+    private Button zd_ok;
+    public static final String ACCOUNT_SID = "AC9330c0499ef2576ac9c88376fbc3ab6d";
+    public static final String AUTH_TOKEN = "ffdcc44bae1d9f4abdb5330a5175c226";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         // TODO
-        ObservableList<String> list_ne = FXCollections.observableArrayList("Formateur", "Membre", "Admin", "Entrepreneur");
+        ObservableList<String> list_ne = FXCollections.observableArrayList("Formateur", "Membre", "Entrepreneur");
         zd_Role.setItems(list_ne);
         zd_DDN.setValue(LocalDate.now());
         zd_Role.setValue("");
@@ -207,7 +226,7 @@ public class InscriptionController implements Initializable {
                 zd_LEntrpreneurUsage.setVisible(false);
                 zd_nomeentrprise.setVisible(false);
                 zd_sitewebEntreprise.setVisible(false);
-                zd_EntrpreneurUsage.setVisible(false);
+                zd_EntrpreneurUsage.setVisible(false);/*
             } else if (Admin.equals(zd_Role.getValue())) {
                 zd_Rolel.setText("completer le formulaire pour terminer l'inscription en tant que Admin :) ");
                 zd_LOrg.setVisible(false);
@@ -221,7 +240,7 @@ public class InscriptionController implements Initializable {
                 zd_LEntrpreneurUsage.setVisible(false);
                 zd_nomeentrprise.setVisible(false);
                 zd_sitewebEntreprise.setVisible(false);
-                zd_EntrpreneurUsage.setVisible(false);
+                zd_EntrpreneurUsage.setVisible(false);*/
             } else if (Entrepreneur.equals(zd_Role.getValue())) {
                 zd_Rolel.setText("completer le formulaire pour terminer l'inscription en tant que Enrepreneur :) ");
                 zd_LOrg.setVisible(false);
@@ -244,134 +263,54 @@ public class InscriptionController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
+                zd_codev.setVisible(true);
+                zd_lcodev.setVisible(true);
+                zd_ok.setVisible(true);
 
-                try {
+                //ToggleGroup genre = new ToggleGroup();
+                if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
+                        || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
+                        || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("")
+                        || !isNotselected(zd_homme, zd_femme) || (zd_DDN.getValue()).equals(LocalDate.now()) || (zd_Role.getValue()).equals("")) {
+                    Alert a = new Alert(Alert.AlertType.WARNING);
+                    a.setContentText("Please fill all fields ");
+                    a.setHeaderText(null);
+                    a.showAndWait();
 
-                    java.util.Date date
-                            = java.util.Date.from(zd_DDN.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                } else {
+                    if (isInt(zd_numtel)) {
+                        String num = "+216" + zd_numtel.getText();
+                        String codev = zd_codev.getText();
+                        twiliosend(ACCOUNT_SID, AUTH_TOKEN, num);
+                        
 
-                    Boolean verifMembre = verifMembre();
-                    Boolean verifFormateur = verifFormateur();
-                    Boolean verifEntrepreneur = verifEntrepreneur();
-                    Boolean verifAdmin = verifAdmin();
-                    //ToggleGroup genre = new ToggleGroup();
-                    if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
-                            || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
-                            || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("")
-                            || !isNotselected(zd_homme, zd_femme) || (zd_DDN.getValue()).equals(LocalDate.now()) || (zd_Role.getValue()).equals("")) {
-                        Alert a = new Alert(Alert.AlertType.WARNING);
-                        a.setContentText("Please fill all fields ");
-                        a.setHeaderText(null);
-                        a.showAndWait();
-
+                        // }
                     } else {
-                        if (isInt(zd_numtel)) {
-                            if (verifAdmin == false || verifEntrepreneur == false || verifFormateur == false || verifMembre == false) {
-                                Alert alert = new Alert(AlertType.CONFIRMATION);
-                                alert.setTitle("Bienvenue :) ");
-                                alert.setHeaderText(null);
-                                alert.setContentText("ce email existe");
-                                alert.show();
-                            } else {
-                                if ((zd_Mdp.getText().equals(zd_CMdp.getText()))) {
-                                    if (Membre.equals(zd_Role.getValue())) {
-                                        try {
-                                            ms.ajouterMembre(new Membre(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
-                                                    zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                                    zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), sqlDate));
-                                            //System.out.println(zd_DDN.getValue().equals(date1));
-                                            Alert alert = new Alert(AlertType.CONFIRMATION);
-                                            alert.setTitle("Bienvenue :) ");
-                                            alert.setHeaderText(null);
-                                            alert.setContentText("Bienvenue dans notre platform digitale 9arini");
-                                            alert.show();
-                                        } catch (SQLException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        } catch (NoSuchAlgorithmException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                    } else if (Admin.equals(zd_Role.getValue())) {
-                                        try {
-                                            as.ajouterAdmin(new Admin(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
-                                                    zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                                    zd_Mdp.getText(), zd_Role.getValue(), sqlDate));
-                                            Alert alert = new Alert(AlertType.CONFIRMATION);
-                                            alert.setTitle("Bienvenue :) ");
-                                            alert.setHeaderText(null);
-                                            alert.setContentText("Bienvenue dans notre platform digitale 9arini");
-                                            alert.show();
-                                        } catch (SQLException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        } catch (NoSuchAlgorithmException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                    } else if (Formateur.equals(zd_Role.getValue())) {
-                                        try {
-                                            fs.ajouterFormateur(new Formateur(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
-                                                    zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                                    zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_softskills.getText(), sqlDate));
-                                            Alert alert = new Alert(AlertType.CONFIRMATION);
-                                            alert.setTitle("Bienvenue :) ");
-                                            alert.setHeaderText(null);
-                                            alert.setContentText("Bienvenue dans notre platform digitale 9arini");
-                                            alert.show();
-                                        } catch (SQLException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        } catch (NoSuchAlgorithmException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                    } else if (Entrepreneur.equals(zd_Role.getValue())) {
-                                        try {
-                                            es.ajouterEntrepreneur(new Entrepreneur(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
-                                                    zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                                    zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_nomeentrprise.getText(), zd_sitewebEntreprise.getText(), zd_EntrpreneurUsage.getText(), sqlDate));
-                                            Alert alert = new Alert(AlertType.CONFIRMATION);
-                                            alert.setTitle("Bienvenue :) ");
-                                            alert.setHeaderText(null);
-                                            alert.setContentText("Bienvenue dans notre platform digitale 9arini");
-                                            alert.show();
-                                        } catch (SQLException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        } catch (NoSuchAlgorithmException ex) {
-                                            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-                                    }
-                                } else {
-                                    zd_LCmdp.setText("les mot de passe doivent etre identique");
-                                }
-                            }
-
-                            // }
-                        } else {
-                            System.out.println("put a valid number");
-                            Alert alert = new Alert(AlertType.CONFIRMATION);
-                            alert.setTitle("warning !! ");
-                            alert.setHeaderText(null);
-                            alert.setContentText("entrer un numero de telephone valide");
-                            alert.show();
-                        }
-
+                        System.out.println("put a valid number");
+                        Alert alert = new Alert(AlertType.CONFIRMATION);
+                        alert.setTitle("warning !! ");
+                        alert.setHeaderText(null);
+                        alert.setContentText("entrer un numero de telephone valide");
+                        alert.show();
                     }
-                } catch (IOException ex) {
-                    Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NoSuchAlgorithmException ex) {
-                    Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
 
             }
         });
 
         zd_upload.setOnAction(e -> {
-           
-}
-); 
+            try {
+                uploadFile(zd_Pdppath.getText());
+            } catch (IOException ex) {
+                Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        });
     }
 
     @FXML
-        private void UploadImageActionPerformed(ActionEvent event) throws FileNotFoundException {
+    private void UploadImageActionPerformed(ActionEvent event) throws FileNotFoundException {
 
         FileChooser fileChooser = new FileChooser();
 
@@ -416,7 +355,7 @@ public class InscriptionController implements Initializable {
     }
 
     @FXML
-        private void annulerInscription(ActionEvent event) throws IOException {
+    private void annulerInscription(ActionEvent event) throws IOException {
         try {
             Parent page1 = FXMLLoader.load(getClass().getResource("/view/Authentification.fxml"));
             Scene scene = zd_annulerInscription.getScene();
@@ -428,8 +367,7 @@ public class InscriptionController implements Initializable {
         }
     }
 
-    @FXML
-        private boolean verifMembre() throws IOException, SQLException, NoSuchAlgorithmException {
+    private boolean verifMembre() throws IOException, SQLException, NoSuchAlgorithmException {
         MembreService ms = new MembreService();
         String role = zd_Email.getText();
         boolean verifMail = true;
@@ -443,8 +381,7 @@ public class InscriptionController implements Initializable {
 
     }
 
-    @FXML
-        private boolean verifAdmin() throws IOException, SQLException, NoSuchAlgorithmException {
+    private boolean verifAdmin() throws IOException, SQLException, NoSuchAlgorithmException {
         AdminService ms = new AdminService();
         String role = zd_Email.getText();
         boolean verifMail = true;
@@ -458,8 +395,7 @@ public class InscriptionController implements Initializable {
 
     }
 
-    @FXML
-        private boolean verifEntrepreneur() throws IOException, SQLException, NoSuchAlgorithmException {
+    private boolean verifEntrepreneur() throws IOException, SQLException, NoSuchAlgorithmException {
         EntrepreneurService ms = new EntrepreneurService();
         String role = zd_Email.getText();
         boolean verifMail = true;
@@ -473,8 +409,7 @@ public class InscriptionController implements Initializable {
 
     }
 
-    @FXML
-        private boolean verifFormateur() throws IOException, SQLException, NoSuchAlgorithmException {
+    private boolean verifFormateur() throws IOException, SQLException, NoSuchAlgorithmException {
         FormateurService ms = new FormateurService();
         String role = zd_Email.getText();
         boolean verifMail = true;
@@ -488,8 +423,7 @@ public class InscriptionController implements Initializable {
 
     }
 
-    @FXML
-        private boolean isInt(TextField f) {
+    private boolean isInt(TextField f) {
         try {
             Integer.parseInt(f.getText());
             return true;
@@ -498,19 +432,218 @@ public class InscriptionController implements Initializable {
             return false;
         }
     }
-    @FXML
-        private boolean  isNotselected(RadioButton a,RadioButton b ){
-        boolean verif=false;
-    if(a.isSelected()|| b.isSelected())
-        verif =true;
-        return verif;
-        
+
+    private boolean isNotselected(RadioButton a, RadioButton b) {
+        boolean verif = false;
+        if (a.isSelected() || b.isSelected()) {
+            verif = true;
         }
+        return verif;
+
+    }
+
+    private boolean isNotPressed(DatePicker a, java.sql.Date sqlDate) {
+        boolean verif = true;
+        if (a.getValue().equals(sqlDate)) {
+            verif = false;
+        }
+        return verif;
+    }
+
+    public void uploadFile(String sourceFileUri) throws MalformedURLException, IOException {
+
+        FileInputStream fileInputStream = null;
+        try {
+            String fileName = sourceFileUri;
+            String uploadPath;
+            uploadPath = "http://localhost/";
+            HttpURLConnection conn = null;
+            DataOutputStream dos = null;
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+            int bytesRead, bytesAvailable, bufferSize;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            File sourceFile = new File(sourceFileUri);
+            // open a URL connection to the Servlet
+            fileInputStream = new FileInputStream(sourceFile);
+            URL url = new URL(uploadPath);
+            // Open a HTTP  connection to  the URL
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoInput(true); // Allow Inputs
+            conn.setDoOutput(true); // Allow Outputs
+            conn.setUseCaches(false); // Don't use a Cached Copy
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            conn.setRequestProperty("uploaded_file", fileName);
+            dos = new DataOutputStream(conn.getOutputStream());
+            dos.writeBytes(twoHyphens + boundary + lineEnd);
+            // create a buffer of  maximum size
+            bytesAvailable = fileInputStream.available();
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            buffer = new byte[bufferSize];
+            // read file and write it into form...
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            while (bytesRead > 0) {
+
+                dos.write(buffer, 0, bufferSize);
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+            }
+            // send multipart form data necesssary after file data...
+            dos.writeBytes(lineEnd);
+            dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+            // Responses from the server (code and message)
+            int serverResponseCode = conn.getResponseCode();
+            String serverResponseMessage = conn.getResponseMessage();
+            //close the streams //
+            fileInputStream.close();
+            dos.flush();
+            dos.close();
+        } // End else block
+        catch (FileNotFoundException ex) {
+            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fileInputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param ACCOUNT_SID
+     * @param AUTH_TOKEN
+     */
+    public static void twiliosend(String ACCOUNT_SID, String AUTH_TOKEN, String num) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Verification verification;
+        verification = Verification.creator(
+                "VA86531b1edfb710a199ff28ba552a43c6",
+                num,
+                "sms")
+                .create();
+
+        System.out.println(verification.getStatus());
+    }
+
+    public static boolean twilioverif(String ACCOUNT_SID, String AUTH_TOKEN, String codev, String num) {
+        boolean verif = false;
+
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        VerificationCheck verificationCheck = VerificationCheck.creator(
+                "VA86531b1edfb710a199ff28ba552a43c6",
+                codev)
+                .setTo(num).create();
+
+        System.out.println(verificationCheck.getStatus());
+        if ((verificationCheck.getStatus()).equals("approved")) {
+            verif = true;
+        } else {
+            return false;
+        }
+        return verif;
+    }
+
     @FXML
-        private boolean  isNotPressed (DatePicker a,java.sql.Date sqlDate){
-    boolean verif=true;
-            if(a.getValue().equals(sqlDate))
-                verif =false;
-            return verif;
-}
+    private void ok(ActionEvent event) {
+        String num ="+216"+zd_numtel.getText();
+            String codev=zd_codev.getText();
+        if (twilioverif(ACCOUNT_SID, AUTH_TOKEN, codev, num)) {
+            try {
+                java.util.Date date
+                        = java.util.Date.from(zd_DDN.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                MembreService ms = new MembreService();
+                AdminService as = new AdminService();
+                FormateurService fs = new FormateurService();
+                EntrepreneurService es = new EntrepreneurService();
+                String Membre = new String("Membre");
+                String Admin = new String("Admin");
+                String Formateur = new String("Formateur");
+                String Entrepreneur = new String("Entrepreneur");
+                Boolean verifMembre = verifMembre();
+                Boolean verifFormateur = verifFormateur();
+                Boolean verifEntrepreneur = verifEntrepreneur();
+                Boolean verifAdmin = verifAdmin();
+                if (verifAdmin == false || verifEntrepreneur == false || verifFormateur == false || verifMembre == false) {
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Bienvenue :) ");
+                    alert.setHeaderText(null);
+                    alert.setContentText("ce email existe");
+                    alert.show();
+                } else {
+                    if ((zd_Mdp.getText().equals(zd_CMdp.getText()))) {
+                        if (Membre.equals(zd_Role.getValue())) {
+                            ms.ajouterMembre(new Membre(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
+                                    zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
+                                    zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), sqlDate));
+                            /*
+                        } else if (Admin.equals(zd_Role.getValue())) {
+                        try {
+                        as.ajouterAdmin(new Admin(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
+                        zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
+                        zd_Mdp.getText(), zd_Role.getValue(), sqlDate));
+                        Alert alert = new Alert(AlertType.CONFIRMATION);
+                        alert.setTitle("Bienvenue :) ");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Bienvenue dans notre platform digitale 9arini");
+                        alert.show();
+                        } catch (SQLException ex) {
+                        Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+                        }*/
+                            //System.out.println(zd_DDN.getValue().equals(date1));
+                            Alert alert = new Alert(AlertType.CONFIRMATION);
+                            alert.setTitle("Bienvenue :) ");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Bienvenue dans notre platform digitale 9arini");
+                            alert.show();
+                        } else if (Formateur.equals(zd_Role.getValue())) {
+                            fs.ajouterFormateur(new Formateur(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
+                                    zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
+                                    zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_softskills.getText(), sqlDate));
+                            Alert alert = new Alert(AlertType.CONFIRMATION);
+                            alert.setTitle("Bienvenue :) ");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Bienvenue dans notre platform digitale 9arini");
+                            alert.show();
+                        } else if (Entrepreneur.equals(zd_Role.getValue())) {
+                            es.ajouterEntrepreneur(new Entrepreneur(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
+                                    zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
+                                    zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_nomeentrprise.getText(), zd_sitewebEntreprise.getText(), zd_EntrpreneurUsage.getText(), sqlDate));
+                            Alert alert = new Alert(AlertType.CONFIRMATION);
+                            alert.setTitle("Bienvenue :) ");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Bienvenue dans notre platform digitale 9arini");
+                            alert.show();
+                        }
+                    } else {
+                        zd_LCmdp.setText("les mot de passe doivent etre identique");
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Bienvenue :) ");
+            alert.setHeaderText(null);
+            alert.setContentText("entrer un numero de tel valide ou code envoyé par sms erroné");
+            alert.show();
+        }
+    }
+
 }

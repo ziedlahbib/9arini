@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 import entities.Admin;
 import entities.Formateur;
 import entities.Membre;
+import java.security.NoSuchAlgorithmException;
 import services.AdminService;
 import services.FormateurService;
 import services.MembreService;
@@ -94,6 +95,8 @@ public class ListeAdminController implements Initializable {
     public ObservableList<Admin> list;
     @FXML
     private TextField text_recherche;
+    @FXML
+    private Button zd_modfier;
 
     /**
      * Initializes the controller class.
@@ -196,5 +199,24 @@ public class ListeAdminController implements Initializable {
         } catch (IOException ex) {
         }
     }
+
+    @FXML
+    private void mofiierAdmin(ActionEvent event) {
+    
+            
+        
+        try {
+            Parent page2 = FXMLLoader.load(getClass().getResource("/view/AjouterAdmin.fxml"));
+            Scene scene2 = zd_modfier.getScene();
+            scene2.setRoot(page2);
+            Stage stage2 = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage2.setScene(scene2);
+            stage2.show();
+        } catch (IOException ex) {
+            Logger.getLogger(ListeAdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     
 }
