@@ -37,6 +37,7 @@ import entities.Entrepreneur;
 import entities.Formateur;
 import entities.Membre;
 import entities.Utilisateur;
+import java.sql.Date;
 import services.AdminService;
 import services.EntrepreneurService;
 import services.FormateurService;
@@ -47,9 +48,9 @@ import services.MembreService;
  *
  * @author lahbib
  */
-
 public class ListeMembreController implements Initializable {
 
+    public static Membre connectedMembre;
     @FXML
     private TableColumn<?, ?> zd_utilisateurID;
     @FXML
@@ -86,20 +87,20 @@ public class ListeMembreController implements Initializable {
     private TableColumn<?, ?> zd_EntrepreneurSiteWeb;
     @FXML
     private TableColumn<?, ?> zd_EntrepreneurUsage;
-    
+
     @FXML
     private TableView<Membre> zd_tablemembre;
-    
+
     @FXML
     private Button zd_suppMembre;
     @FXML
     private Button zd_retour;
-    
+
     private ObservableList<Membre> data;
     MembreService ms = new MembreService();
     ObservableList<Membre> obl = FXCollections.observableArrayList();
     public ObservableList<Membre> list;
-    
+
     @FXML
     private TextField text_recherche;
     @FXML
@@ -124,10 +125,9 @@ public class ListeMembreController implements Initializable {
                 //ObservableList obm = FXCollections.observableArrayList(m);
                 m = (ArrayList<Membre>) ms.getAllMembre();
                 ObservableList obm = FXCollections.observableArrayList(m);
-                
+
                 //e= (ArrayList<Entrepreneur>) es.getAllEntrepreneur();
                 //ObservableList obe = FXCollections.observableArrayList(e);
-                
                 //a= (ArrayList<Admin>) as.getAllAdmin();
                 //ObservableList oba = FXCollections.observableArrayList(a);
                 zd_tablemembre.setItems(obm);
@@ -153,6 +153,7 @@ public class ListeMembreController implements Initializable {
                 zd_nomEntreprise.setCellValueFactory(new PropertyValueFactory<>("nomEntreprise"));
                 zd_EntrepreneurSiteWeb.setCellValueFactory(new PropertyValueFactory<>("EntrepreneurSiteWeb"));
                 zd_EntrepreneurUsage.setCellValueFactory(new PropertyValueFactory<>("EntrepreneurUsage"));
+
             } catch (SQLException ex) {
                 Logger.getLogger(ListeFormateurController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -178,7 +179,7 @@ public class ListeMembreController implements Initializable {
                         if (Membre.getUtilisateurAddressEmail().toLowerCase().contains(lower)) {
                             return true;
                         }
-                        
+
                         return false;
                     });
                 });
@@ -187,32 +188,36 @@ public class ListeMembreController implements Initializable {
                 zd_tablemembre.setItems(sortedData);
             });
             
-            
         } catch (SQLException ex) {
             Logger.getLogger(ListeMembreController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         
-    }   
+        
+
+    }
+
     @FXML
     private void supprimerMembre(ActionEvent event) throws SQLException {
-         if (event.getSource()==zd_suppMembre) {
+        if (event.getSource() == zd_suppMembre) {
             Membre m = new Membre();
             m.setUtilisateurID(zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurID());
             System.out.println(zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurID());
-;
-        MembreService ms = new MembreService();
-        ms.supprimerMembre(m);
-                     resetTableData();
+            ;
+            MembreService ms = new MembreService();
+            ms.supprimerMembre(m);
+            resetTableData();
         }
-          }
-    public void resetTableData() throws SQLDataException, SQLException{
-    
+    }
+
+    public void resetTableData() throws SQLDataException, SQLException {
+
         List<Membre> listMembre = new ArrayList<>();
         listMembre = ms.getAllMembre();
         ObservableList<Membre> data = FXCollections.observableArrayList(listMembre);
         zd_tablemembre.setItems(data);
     }
+
     @FXML
     private void retour(ActionEvent event) throws IOException {
         try {
@@ -226,12 +231,25 @@ public class ListeMembreController implements Initializable {
         }
     }
 
-   @FXML
+    @FXML
     private void mofiierAdmin(ActionEvent event) {
-    
-            
-        
+
         try {
+            int id = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurID();
+        String Nom = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurNom();
+        String Prenom = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurPrenom();
+        String Pdp = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurPdp();
+        String genre = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurGenre();
+        String role = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurRole();
+        String address = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurAddress();
+        String pays = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurPays();
+        String email = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurAddressEmail();
+        java.util.Date ddn = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurDDN();
+        String fonction = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurFonction();
+        String org = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurOrganisme();
+        int phone = zd_tablemembre.getSelectionModel().getSelectedItem().getUtilisateurphone();
+        Membre m1 = new Membre(id, phone, Pdp, Nom, Prenom, address, pays, genre, email, role, org, fonction, ddn);
+        ListeMembreController.connectedMembre = m1;
             Parent page2 = FXMLLoader.load(getClass().getResource("/view/AjouterAdmin.fxml"));
             Scene scene2 = zd_modfier.getScene();
             scene2.setRoot(page2);
@@ -241,7 +259,7 @@ public class ListeMembreController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ListeAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
 }

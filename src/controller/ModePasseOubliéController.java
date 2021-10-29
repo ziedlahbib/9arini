@@ -50,8 +50,6 @@ public class ModePasseOubliéController implements Initializable {
     @FXML
     private TextField zd_numtel;
 
-    
-
     public ModePasseOubliéController(TextField AcceuilEmail, TextField AcceuilPasswd) {
         this.AcceuilEmail = AcceuilEmail;
         this.AcceuilPasswd = AcceuilPasswd;
@@ -96,7 +94,8 @@ public class ModePasseOubliéController implements Initializable {
     // TODO
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       }
+    }
+
     @FXML
     private void goToInscription(ActionEvent event) throws IOException {
         try {
@@ -112,43 +111,58 @@ public class ModePasseOubliéController implements Initializable {
 
     @FXML
     private void login(ActionEvent event) throws IOException, SQLException, NoSuchAlgorithmException {
-        zd_codev.setVisible(true);
-        zd_lcodev.setVisible(true);
-        zd_ok.setVisible(true);
-        String req = "SELECT * from utilisateur WHERE utilisateurAdresseEmail LIKE '" + AcceuilEmail.getText() + "' and utilisateurphone LIKE '" + zd_numtel.getText() + "' ";
-        Statement stm = connexion.createStatement();
-        ResultSet rst = stm.executeQuery(req);
+        int rowCount1 = 0;
+        Statement stm1 = connexion.createStatement();
+        String req1 = "SELECT count(*) as rowCount1 from utilisateur WHERE utilisateurAdresseEmail LIKE '" + AcceuilEmail.getText() + "' and utilisateurphone LIKE '" + zd_numtel.getText() + "' ";
+        ResultSet rp1 = stm1.executeQuery(req1);
+        if (rp1.next()) {
+            rowCount1 = rp1.getInt("rowcount1");
+        }
+        System.out.println(rowCount1);
+        if (rowCount1 == 0) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("warning !! ");
+            alert.setHeaderText(null);
+            alert.setContentText("email ou num de te non valide");
+            alert.show();
 
-        while (rst.next()) {
+        } else {
+            String req = "SELECT * from utilisateur WHERE utilisateurAdresseEmail LIKE '" + AcceuilEmail.getText() + "' and utilisateurphone LIKE '" + zd_numtel.getText() + "' ";
+            Statement stm = connexion.createStatement();
+            ResultSet rst = stm.executeQuery(req);
 
-            Admin p = new Admin(rst.getInt("utilisateurID"),
-                    rst.getInt("utilisateurphone"),
-                    rst.getString("utilisateurPdp"),
-                    rst.getString("utilisateurNom"),
-                    rst.getString("utilisateurPrenom"),
-                    rst.getString("utilisateurAdresse"),
-                    rst.getString("utilisateurPays"),
-                    rst.getString("utilisateurGenre"),
-                    rst.getString("utilisateurAdresseEmail"),
-                    rst.getString("utilisateurMDP"),
-                    rst.getString("utilisateurRole"),
-                    rst.getString("utilisateurOrganisme"),
-                    rst.getString("utilisateurFonction"),
-                    rst.getString("utilisateurSavoirEtre"),
-                    rst.getString("nomEntreprise"),
-                    rst.getString("EntrepreneurSiteWeb"),
-                    rst.getString("EntrepreneurUsage"),
-                    rst.getDate("utilisateurDDN"));
+            while (rst.next()) {
 
-            ModePasseOubliéController.connectedUser = p;
-            AuthentificationController.connectedUser=ModePasseOubliéController.connectedUser;    
+                Admin p = new Admin(rst.getInt("utilisateurID"),
+                        rst.getInt("utilisateurphone"),
+                        rst.getString("utilisateurPdp"),
+                        rst.getString("utilisateurNom"),
+                        rst.getString("utilisateurPrenom"),
+                        rst.getString("utilisateurAdresse"),
+                        rst.getString("utilisateurPays"),
+                        rst.getString("utilisateurGenre"),
+                        rst.getString("utilisateurAdresseEmail"),
+                        rst.getString("utilisateurMDP"),
+                        rst.getString("utilisateurRole"),
+                        rst.getString("utilisateurOrganisme"),
+                        rst.getString("utilisateurFonction"),
+                        rst.getString("utilisateurSavoirEtre"),
+                        rst.getString("nomEntreprise"),
+                        rst.getString("EntrepreneurSiteWeb"),
+                        rst.getString("EntrepreneurUsage"),
+                        rst.getDate("utilisateurDDN"));
 
-            String num ="+216"+p.getUtilisateurphone();
-            String codev=zd_codev.getText();
-            
-            twiliosend(ACCOUNT_SID, AUTH_TOKEN,num);
-            
-        
+                ModePasseOubliéController.connectedUser = p;
+                AuthentificationController.connectedUser = ModePasseOubliéController.connectedUser;
+
+                String num = "+216" + p.getUtilisateurphone();
+                String codev = zd_codev.getText();
+
+                twiliosend(ACCOUNT_SID, AUTH_TOKEN, num);
+                zd_codev.setVisible(true);
+                zd_lcodev.setVisible(true);
+                zd_ok.setVisible(true);
+            }
         }
     }
 
@@ -183,7 +197,7 @@ public class ModePasseOubliéController implements Initializable {
      * @param AUTH_TOKEN
      * @param num
      */
-    public static void twiliosend(String ACCOUNT_SID,String AUTH_TOKEN,String num) {
+    public static void twiliosend(String ACCOUNT_SID, String AUTH_TOKEN, String num) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Verification verification;
         verification = Verification.creator(
@@ -194,38 +208,45 @@ public class ModePasseOubliéController implements Initializable {
 
         System.out.println(verification.getStatus());
     }
-    public static boolean twilioverif(String ACCOUNT_SID,String AUTH_TOKEN,String codev,String num){
-        boolean verif=false;
-        
+
+    public static boolean twilioverif(String ACCOUNT_SID, String AUTH_TOKEN, String codev, String num) {
+        boolean verif = false;
+
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         VerificationCheck verificationCheck = VerificationCheck.creator(
                 "VA43d502871f086dd1dc62cb5fccfef0b2",
                 codev)
-            .setTo(num).create();
+                .setTo(num).create();
 
         System.out.println(verificationCheck.getStatus());
-    if((verificationCheck.getStatus()).equals("approved"))
-        verif =true;
-    else return false;
-    return verif;
+        if ((verificationCheck.getStatus()).equals("approved")) {
+            verif = true;
+        } else {
+            return false;
+        }
+        return verif;
     }
+
     @FXML
-    private void ok(ActionEvent event){
+    private void ok(ActionEvent event) {
         try {
-            String num ="+216"+connectedUser.getUtilisateurphone();
-            String codev=zd_codev.getText();
-            if(twilioverif(ACCOUNT_SID,AUTH_TOKEN,codev,num)){
-            Parent page2 = FXMLLoader.load(getClass().getResource("/view/ModifierProfil.fxml"));
-            Scene scene2 = btn_AcceuilConnexion.getScene();
-            scene2.setRoot(page2);
-            Stage stage2 = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage2.setScene(scene2);
-            stage2.show();}else{Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Bienvenue :) ");
-                        alert.setHeaderText(null);
-                        alert.setContentText("erreur de connexion");
-                        alert.show();}
-            
+            String num = "+216" + connectedUser.getUtilisateurphone();
+            String codev = zd_codev.getText();
+            if (twilioverif(ACCOUNT_SID, AUTH_TOKEN, codev, num)) {
+                Parent page2 = FXMLLoader.load(getClass().getResource("/view/ModifierProfil.fxml"));
+                Scene scene2 = btn_AcceuilConnexion.getScene();
+                scene2.setRoot(page2);
+                Stage stage2 = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage2.setScene(scene2);
+                stage2.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Bienvenue :) ");
+                alert.setHeaderText(null);
+                alert.setContentText("erreur de connexion");
+                alert.show();
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(ModePasseOubliéController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Iservice;
+package IService;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import entities.Admin;
+import entities.Utilisateur;
 
 /**
  *
@@ -21,6 +22,10 @@ public interface IserviceAdmin {
     public List<Admin> getAllAdmin() throws SQLException;
     public String hashmdp (String mdp) throws NoSuchAlgorithmException;
     public List<Admin> rechercherAdmin(Admin a) throws SQLException;
+    public void modifierAdminMembre(Admin p, Utilisateur u) throws NoSuchAlgorithmException, SQLException;
+    public void modifierAdminFormateur(Admin p, Utilisateur u) throws NoSuchAlgorithmException, SQLException;
+    public void modifierAdminEntrepreneur(Admin p, Utilisateur u) throws NoSuchAlgorithmException, SQLException;
+    
     
     
 }

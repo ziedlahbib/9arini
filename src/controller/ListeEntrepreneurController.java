@@ -36,6 +36,7 @@ import entities.Admin;
 import entities.Entrepreneur;
 import entities.Formateur;
 import entities.Membre;
+import entities.Utilisateur;
 import services.AdminService;
 import services.EntrepreneurService;
 import services.FormateurService;
@@ -47,7 +48,7 @@ import services.MembreService;
  * @author lahbib
  */
 public class ListeEntrepreneurController implements Initializable {
-
+    public static Entrepreneur connectedEntrepreneur;
     @FXML
     private TableView<Entrepreneur> zd_tableEntrepreneur;
     @FXML
@@ -207,6 +208,22 @@ public class ListeEntrepreneurController implements Initializable {
             
         
         try {
+            int id = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurID();
+        String Nom = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurNom();
+        String Prenom = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurPrenom();
+        String Pdp = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurPdp();
+        String genre = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurGenre();
+        String role = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurRole();
+        String address = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurAddress();
+        String pays = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurPays();
+        String email = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurAddressEmail();
+        java.util.Date ddn = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurDDN();
+        String nomentr = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getNomEntreprise();
+        String site = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getEntrepreneurSiteWeb();
+        String usage =zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getEntrepreneurUsage();
+        int phone = zd_tableEntrepreneur.getSelectionModel().getSelectedItem().getUtilisateurphone();
+        Entrepreneur m1 = new Entrepreneur(id, ddn,Pdp,phone, Nom, Prenom, address, pays, genre, email, nomentr,role,site,usage);
+        ListeEntrepreneurController.connectedEntrepreneur = m1;
             Parent page2 = FXMLLoader.load(getClass().getResource("/view/AjouterAdmin.fxml"));
             Scene scene2 = zd_modfier.getScene();
             scene2.setRoot(page2);

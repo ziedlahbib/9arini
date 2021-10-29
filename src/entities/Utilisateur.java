@@ -21,6 +21,55 @@ public abstract class Utilisateur {
         return utilisateurID;
     }
 
+    public Utilisateur(String utilisateurNom) {
+        this.utilisateurNom = utilisateurNom;
+    }
+
+    public Utilisateur(int utilisateurID, int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole, Date utilisateurDDN) {
+        this.utilisateurID = utilisateurID;
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        this.utilisateurRole = utilisateurRole;
+        this.utilisateurDDN = utilisateurDDN;
+    }
+    
+
+    public Utilisateur(int utilisateurID, int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, String utilisateurSoftskills) {
+        this.utilisateurID = utilisateurID;
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        this.utilisateurRole = utilisateurRole;
+        this.utilisateurOrganisme = utilisateurOrganisme;
+        this.utilisateurFonction = utilisateurFonction;
+        this.utilisateurSoftskills = utilisateurSoftskills;
+    }
+    
+
+    public Utilisateur(int utilisateurID, int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole) {
+        this.utilisateurID = utilisateurID;
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        this.utilisateurRole = utilisateurRole;
+    }
+
     public void setUtilisateurID(int utilisateurID) {
         this.utilisateurID = utilisateurID;
     }
@@ -200,6 +249,25 @@ public abstract class Utilisateur {
         this.EntrepreneurUsage = EntrepreneurUsage;
         this.utilisateurDDN = utilisateurDDN;
     }
+    public Utilisateur( String utilisateurPdp,int utilisateurphone, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail,  String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction,String utilisateurSoftskills, String nomEntreprise, String EntrepreneurSiteWeb, String EntrepreneurUsage, Date utilisateurDDN) {
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+       
+        this.utilisateurRole = utilisateurRole;
+        this.utilisateurOrganisme = utilisateurOrganisme;
+        this.utilisateurFonction = utilisateurFonction;
+         this.utilisateurSoftskills = utilisateurSoftskills;
+        this.nomEntreprise = nomEntreprise;
+        this.EntrepreneurSiteWeb = EntrepreneurSiteWeb;
+        this.EntrepreneurUsage = EntrepreneurUsage;
+        this.utilisateurDDN = utilisateurDDN;
+    }
 
     public Utilisateur(int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurMDP, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, String utilisateurSoftskills, Date utilisateurDDN) {
         this.utilisateurphone = utilisateurphone;
@@ -233,6 +301,25 @@ public abstract class Utilisateur {
         this.utilisateurFonction = utilisateurFonction;
         this.utilisateurDDN = utilisateurDDN;
     }
+    public Utilisateur( String utilisateurPdp,int utilisateurphone, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurSoftskills, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, Date utilisateurDDN) {
+        
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        
+        this.utilisateurRole = utilisateurRole;
+        this.utilisateurOrganisme = utilisateurOrganisme;
+        this.utilisateurFonction = utilisateurFonction;
+        this.utilisateurSoftskills = utilisateurSoftskills;
+        this.utilisateurDDN = utilisateurDDN;
+        
+    }
+    
 
     public Utilisateur(int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurMDP, String utilisateurRole) {
         this.utilisateurphone = utilisateurphone;
@@ -324,6 +411,72 @@ public abstract class Utilisateur {
         this.utilisateurFonction = utilisateurFonction;
         this.utilisateurDDN = utilisateurDDN;
     }
+    public Utilisateur(int utilisateurID,Date utilisateurDDN  ,String utilisateurPdp,int utilisateurphone, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String nomEntreprise, String utilisateurRole, String EntrepreneurSiteWeb, String EntrepreneurUsage) {
+        this.utilisateurID = utilisateurID;
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        this.nomEntreprise = nomEntreprise;
+        this.utilisateurRole = utilisateurRole;
+        this.EntrepreneurUsage = EntrepreneurUsage;
+        this.EntrepreneurSiteWeb = EntrepreneurSiteWeb;
+        this.utilisateurDDN = utilisateurDDN;
+    }
+    
+    /**
+     *
+     * @param utilisateurID
+     * @param utilisateurphone
+     * @param utilisateurPdp
+     * @param utilisateurNom
+     * @param utilisateurPrenom
+     * @param utilisateurAddress
+     * @param utilisateurPays
+     * @param utilisateurGenre
+     * @param utilisateurAddressEmail
+     * @param utilisateurRole
+     * @param utilisateurOrganisme
+     * @param utilisateurFonction
+     * @param utilisateurSoftskills
+     * @param utilisateurDDN
+     */
+    public Utilisateur(int utilisateurID,  String utilisateurPdp,int utilisateurphone, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole, String utilisateurOrganisme,String utilisateurFonction,String utilisateurSoftskills ,Date utilisateurDDN) {
+        this.utilisateurID = utilisateurID;
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        this.utilisateurRole = utilisateurRole;
+        this.utilisateurOrganisme = utilisateurOrganisme;
+        this.utilisateurFonction = utilisateurFonction;
+        this.utilisateurSoftskills = utilisateurSoftskills;
+        this.utilisateurDDN = utilisateurDDN;
+    }
+    
+    public Utilisateur(int utilisateurID, int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, Date utilisateurDDN) {
+        this.utilisateurID = utilisateurID;
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        this.utilisateurRole = utilisateurRole;
+        this.utilisateurOrganisme = utilisateurOrganisme;
+        this.utilisateurFonction = utilisateurFonction;
+        this.utilisateurDDN = utilisateurDDN;
+    }
 
   
     public Utilisateur(String utilisateurNom, String utilisateurPrenom) {
@@ -362,9 +515,28 @@ public abstract class Utilisateur {
 
     public Utilisateur() {
     }
+    
 
     public Utilisateur(int utilisateurID) {
         this.utilisateurID = utilisateurID;
+    }
+
+    public Utilisateur(int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, String nomEntreprise, String EntrepreneurSiteWeb, String EntrepreneurUsage, Date utilisateurDDN) {
+        this.utilisateurphone = utilisateurphone;
+        this.utilisateurPdp = utilisateurPdp;
+        this.utilisateurNom = utilisateurNom;
+        this.utilisateurPrenom = utilisateurPrenom;
+        this.utilisateurAddress = utilisateurAddress;
+        this.utilisateurPays = utilisateurPays;
+        this.utilisateurGenre = utilisateurGenre;
+        this.utilisateurAddressEmail = utilisateurAddressEmail;
+        this.utilisateurRole = utilisateurRole;
+        this.utilisateurOrganisme = utilisateurOrganisme;
+        this.utilisateurFonction = utilisateurFonction;
+        this.nomEntreprise = nomEntreprise;
+        this.EntrepreneurSiteWeb = EntrepreneurSiteWeb;
+        this.EntrepreneurUsage = EntrepreneurUsage;
+        this.utilisateurDDN = utilisateurDDN;
     }
    
     

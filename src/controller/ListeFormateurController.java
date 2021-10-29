@@ -49,7 +49,7 @@ import services.MembreService;
  */
 
 public class ListeFormateurController implements Initializable {
-
+    public static Formateur connectedFormateur;
     @FXML
     private TableColumn<?, ?> zd_utilisateurID;
     @FXML
@@ -233,6 +233,22 @@ public class ListeFormateurController implements Initializable {
             
         
         try {
+             int id = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurID();
+        String Nom = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurNom();
+        String Prenom = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurPrenom();
+        String Pdp = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurPdp();
+        String genre = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurGenre();
+        String role = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurRole();
+        String address = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurAddress();
+        String pays = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurPays();
+        String email = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurAddressEmail();
+        java.util.Date ddn = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurDDN();
+        String fonction = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurFonction();
+        String org = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurOrganisme();
+        String softskills = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurSoftskills();
+        int phone = zd_tableFormateur.getSelectionModel().getSelectedItem().getUtilisateurphone();
+        Formateur m1 = new Formateur(id, Pdp,phone, Nom, Prenom, address, pays, genre, email, role,fonction,org,softskills, ddn);
+        ListeFormateurController.connectedFormateur = m1;
             Parent page2 = FXMLLoader.load(getClass().getResource("/view/AjouterAdmin.fxml"));
             Scene scene2 = zd_modfier.getScene();
             scene2.setRoot(page2);

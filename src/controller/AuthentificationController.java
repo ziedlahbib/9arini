@@ -51,8 +51,6 @@ public class AuthentificationController implements Initializable {
     @FXML
     private Hyperlink zd_mdpoublier;
 
-    
-
     public AuthentificationController(TextField AcceuilEmail, TextField AcceuilPasswd) {
         this.AcceuilEmail = AcceuilEmail;
         this.AcceuilPasswd = AcceuilPasswd;
@@ -99,7 +97,8 @@ public class AuthentificationController implements Initializable {
     // TODO
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       }
+    }
+
     @FXML
     private void goToInscription(ActionEvent event) throws IOException {
         try {
@@ -115,13 +114,29 @@ public class AuthentificationController implements Initializable {
 
     @FXML
     private void login(ActionEvent event) throws IOException, SQLException, NoSuchAlgorithmException {
-        zd_codev.setVisible(true);
-        zd_lcodev.setVisible(true);
-        zd_ok.setVisible(true);
-        String req = "SELECT * from utilisateur WHERE utilisateurAdresseEmail LIKE '" + AcceuilEmail.getText() + "' and utilisateurMDP LIKE '" + hashmdp(AcceuilPasswd.getText()) + "' ";
+        int rowCount1 = 0;
+        Statement stm1 = connexion.createStatement();
+          String req1 = "SELECT count(*) as rowCount1 from utilisateur WHERE utilisateurAdresseEmail LIKE '" + AcceuilEmail.getText() + "' and utilisateurMDP LIKE '" + hashmdp(AcceuilPasswd.getText()) + "' ";  
+            ResultSet rp1 = stm1.executeQuery(req1);
+        if (rp1.next())
+              rowCount1 = rp1.getInt("rowcount1");
+            System.out.println(rowCount1);
+            if (rowCount1==0) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("warning !! ");
+                alert.setHeaderText(null);
+                alert.setContentText("email ou mot de passe non valide");
+                alert.show();
+                
+
+            } else {
+
+                 String req = "SELECT * from utilisateur WHERE utilisateurAdresseEmail LIKE '" + AcceuilEmail.getText() + "' and utilisateurMDP LIKE '" + hashmdp(AcceuilPasswd.getText()) + "' ";
+        
         Statement stm = connexion.createStatement();
         ResultSet rst = stm.executeQuery(req);
-
+        
+      
         while (rst.next()) {
 
             Admin p = new Admin(rst.getInt("utilisateurID"),
@@ -142,20 +157,20 @@ public class AuthentificationController implements Initializable {
                     rst.getString("EntrepreneurSiteWeb"),
                     rst.getString("EntrepreneurUsage"),
                     rst.getDate("utilisateurDDN"));
-
             AuthentificationController.connectedUser = p;
-                
+            String num = "+216" + p.getUtilisateurphone();
+                String codev = zd_codev.getText();
 
-            String num ="+216"+p.getUtilisateurphone();
-            String codev=zd_codev.getText();
+                //twiliosend(ACCOUNT_SID, AUTH_TOKEN,num);
+                zd_codev.setVisible(true);
+                zd_lcodev.setVisible(true);
+                zd_ok.setVisible(true);
             
-            //twiliosend(ACCOUNT_SID, AUTH_TOKEN,num);
-            
-        
+            }
+       
+
         }
     }
-
-   
 
     /**
      *
@@ -163,7 +178,7 @@ public class AuthentificationController implements Initializable {
      * @param AUTH_TOKEN
      * @param num
      */
-    public static void twiliosend(String ACCOUNT_SID,String AUTH_TOKEN,String num) {
+    public static void twiliosend(String ACCOUNT_SID, String AUTH_TOKEN, String num) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Verification verification;
         verification = Verification.creator(
@@ -174,27 +189,31 @@ public class AuthentificationController implements Initializable {
 
         System.out.println(verification.getStatus());
     }
-    public static boolean twilioverif(String ACCOUNT_SID,String AUTH_TOKEN,String codev,String num){
-        boolean verif=false;
-        
+
+    public static boolean twilioverif(String ACCOUNT_SID, String AUTH_TOKEN, String codev, String num) {
+        boolean verif = false;
+
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         VerificationCheck verificationCheck = VerificationCheck.creator(
                 "VA43d502871f086dd1dc62cb5fccfef0b2",
                 codev)
-            .setTo(num).create();
+                .setTo(num).create();
 
         System.out.println(verificationCheck.getStatus());
-    if((verificationCheck.getStatus()).equals("approved"))
-        verif =true;
-    else return false;
-    return verif;
+        if ((verificationCheck.getStatus()).equals("approved")) {
+            verif = true;
+        } else {
+            return false;
+        }
+        return verif;
     }
+
     @FXML
-    private void ok(ActionEvent event){
+    private void ok(ActionEvent event) {
         try {
-            String num ="+216"+connectedUser.getUtilisateurphone();
-            String codev=zd_codev.getText();
-            //if(twilioverif(ACCOUNT_SID,AUTH_TOKEN,codev,num)){
+            String num = "+216" + connectedUser.getUtilisateurphone();
+            String codev = zd_codev.getText();
+            // if(twilioverif(ACCOUNT_SID,AUTH_TOKEN,codev,num)){
             Parent page2 = FXMLLoader.load(getClass().getResource("/view/Acceuil.fxml"));
             Scene scene2 = btn_AcceuilConnexion.getScene();
             scene2.setRoot(page2);
@@ -205,11 +224,12 @@ public class AuthentificationController implements Initializable {
                         alert.setHeaderText(null);
                         alert.setContentText("erreur de connexion");
                         alert.show();}*/
-            
+
         } catch (IOException ex) {
             Logger.getLogger(AuthentificationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @FXML
     private void Motdepasseoublié(ActionEvent event) throws IOException {
         try {
@@ -222,6 +242,7 @@ public class AuthentificationController implements Initializable {
         } catch (IOException ex) {
         }
     }
+
     private String hashmdp(String mdp) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(mdp.getBytes());

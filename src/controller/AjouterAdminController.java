@@ -44,6 +44,7 @@ import entities.Admin;
 import entities.Entrepreneur;
 import entities.Formateur;
 import entities.Membre;
+import entities.Utilisateur;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -133,41 +134,58 @@ public class AjouterAdminController implements Initializable {
     private RadioButton zd_femme;
     @FXML
     private Button zd_APdp;
+    MembreService ms = new MembreService();
+    AdminService as = new AdminService();
+    FormateurService fs = new FormateurService();
+    EntrepreneurService es = new EntrepreneurService();
+    
+    public Membre m = new Membre();
+    public Admin a = new Admin();
+    public Formateur f = new Formateur();
+    public Entrepreneur e = new Entrepreneur();
+    public static Utilisateur u;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        ObservableList<String> list_ne = FXCollections.observableArrayList("Formateur","Admin","Membre", "Entrepreneur");
+        ObservableList<String> list_ne = FXCollections.observableArrayList("Formateur", "Admin", "Membre", "Entrepreneur");
         zd_Role.setItems(list_ne);
-        java.sql.Date r;
-        r = new java.sql.Date(AuthentificationController.connectedUser.getUtilisateurDDN().getTime());
-        LocalDate date = r.toLocalDate();
+
+        /*
         MembreService ms = new MembreService();
         AdminService as = new AdminService();
         FormateurService fs = new FormateurService();
         EntrepreneurService es = new EntrepreneurService();
+        public static Membre m=new Membre();
+        public static Admin a =new Admin();
+        public static Formateur f =new Formateur();
+        public static Entrepreneur e = new Entrepreneur();*/
         String Membre = new String("Membre");
         String Admin = new String("Admin");
         String Formateur = new String("Formateur");
         String Entrepreneur = new String("Entrepreneur");
-        zd_nom.setText(AuthentificationController.connectedUser.getUtilisateurNom());
-        zd_prenom.setText(AuthentificationController.connectedUser.getUtilisateurNom());
-        zd_adresse.setText(AuthentificationController.connectedUser.getUtilisateurAddress());
-        zd_pays.setText(AuthentificationController.connectedUser.getUtilisateurPays());
-        if (AuthentificationController.connectedUser.getUtilisateurGenre().equals("homme")) {
-            zd_genre.selectToggle(zd_homme);
-        } else if (AuthentificationController.connectedUser.getUtilisateurGenre().equals("femme")) {
-            zd_genre.selectToggle(zd_femme);
-        }
-        zd_Email.setText(AuthentificationController.connectedUser.getUtilisateurAddressEmail());
+        while (ListeMembreController.connectedMembre != null) {
+            java.sql.Date r;
+            r = new java.sql.Date(ListeMembreController.connectedMembre.getUtilisateurDDN().getTime());
+            LocalDate date = r.toLocalDate();
+            zd_nom.setText(ListeMembreController.connectedMembre.getUtilisateurNom());
+            zd_prenom.setText(ListeMembreController.connectedMembre.getUtilisateurPrenom());
+            zd_adresse.setText(ListeMembreController.connectedMembre.getUtilisateurAddress());
+            zd_pays.setText(ListeMembreController.connectedMembre.getUtilisateurPays());
+            if (ListeMembreController.connectedMembre.getUtilisateurGenre().equals("homme")) {
+                zd_genre.selectToggle(zd_homme);
+            } else if (ListeMembreController.connectedMembre.getUtilisateurGenre().equals("femme")) {
+                zd_genre.selectToggle(zd_femme);
+            }
+            zd_Email.setText(ListeMembreController.connectedMembre.getUtilisateurAddressEmail());
 
-        zd_numtel.setText(String.valueOf(AuthentificationController.connectedUser.getUtilisateurphone()));
-        zd_DDN.setValue(date);
-        if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Membre)) {
-            zd_Role.setValue(Membre);
-            zd_LOrg.setVisible(true);
-            zd_LFonction.setVisible(true);
+            zd_numtel.setText(String.valueOf(ListeMembreController.connectedMembre.getUtilisateurphone()));
+            zd_DDN.setValue(date);
+            zd_Org.setText(ListeMembreController.connectedMembre.getUtilisateurOrganisme());
+            zd_Fonction.setText(ListeMembreController.connectedMembre.getUtilisateurFonction());
+            zd_Role.setValue(ListeMembreController.connectedMembre.getUtilisateurRole());
+
             zd_Org.setVisible(true);
             zd_Fonction.setVisible(true);
             zd_LSoftSkills.setVisible(false);
@@ -178,11 +196,28 @@ public class AjouterAdminController implements Initializable {
             zd_nomeentrprise.setVisible(false);
             zd_sitewebEntreprise.setVisible(false);
             zd_EntrpreneurUsage.setVisible(false);
+            u = ListeMembreController.connectedMembre;
+            System.out.println("controller.AjouterAdminController.m" + u.toString());
+            ListeMembreController.connectedMembre = null;
+        }
+        while (ListeAdminController.connectedAdmin != null) {
+            java.sql.Date r;
+            r = new java.sql.Date(ListeAdminController.connectedAdmin.getUtilisateurDDN().getTime());
+            LocalDate date = r.toLocalDate();
+            zd_nom.setText(ListeAdminController.connectedAdmin.getUtilisateurNom());
+            zd_prenom.setText(ListeAdminController.connectedAdmin.getUtilisateurPrenom());
+            zd_adresse.setText(ListeAdminController.connectedAdmin.getUtilisateurAddress());
+            zd_pays.setText(ListeAdminController.connectedAdmin.getUtilisateurPays());
+            if (ListeAdminController.connectedAdmin.getUtilisateurGenre().equals("homme")) {
+                zd_genre.selectToggle(zd_homme);
+            } else if (ListeAdminController.connectedAdmin.getUtilisateurGenre().equals("femme")) {
+                zd_genre.selectToggle(zd_femme);
+            }
+            zd_Email.setText(ListeAdminController.connectedAdmin.getUtilisateurAddressEmail());
 
-        } else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Admin)) {
-            zd_Role.setValue(Admin);
-            zd_LOrg.setVisible(false);
-            zd_LFonction.setVisible(false);
+            zd_numtel.setText(String.valueOf(ListeAdminController.connectedAdmin.getUtilisateurphone()));
+            zd_DDN.setValue(date);
+            zd_Role.setValue(ListeAdminController.connectedAdmin.getUtilisateurRole());
             zd_Org.setVisible(false);
             zd_Fonction.setVisible(false);
             zd_LSoftSkills.setVisible(false);
@@ -193,8 +228,30 @@ public class AjouterAdminController implements Initializable {
             zd_nomeentrprise.setVisible(false);
             zd_sitewebEntreprise.setVisible(false);
             zd_EntrpreneurUsage.setVisible(false);
-        } else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Formateur)) {
-            zd_Role.setValue(Formateur);
+            u = ListeAdminController.connectedAdmin;
+            ListeAdminController.connectedAdmin = null;
+        }
+        while (ListeFormateurController.connectedFormateur != null) {
+            java.sql.Date r;
+            r = new java.sql.Date(ListeFormateurController.connectedFormateur.getUtilisateurDDN().getTime());
+            LocalDate date = r.toLocalDate();
+            zd_nom.setText(ListeFormateurController.connectedFormateur.getUtilisateurNom());
+            zd_prenom.setText(ListeFormateurController.connectedFormateur.getUtilisateurPrenom());
+            zd_adresse.setText(ListeFormateurController.connectedFormateur.getUtilisateurAddress());
+            zd_pays.setText(ListeFormateurController.connectedFormateur.getUtilisateurPays());
+            if (ListeFormateurController.connectedFormateur.getUtilisateurGenre().equals("homme")) {
+                zd_genre.selectToggle(zd_homme);
+            } else if (ListeFormateurController.connectedFormateur.getUtilisateurGenre().equals("femme")) {
+                zd_genre.selectToggle(zd_femme);
+            }
+            zd_Email.setText(ListeFormateurController.connectedFormateur.getUtilisateurAddressEmail());
+
+            zd_numtel.setText(String.valueOf(ListeFormateurController.connectedFormateur.getUtilisateurphone()));
+            zd_DDN.setValue(date);
+            zd_Org.setText(ListeFormateurController.connectedFormateur.getUtilisateurOrganisme());
+            zd_Fonction.setText(ListeFormateurController.connectedFormateur.getUtilisateurFonction());
+            zd_softskills.setText(ListeFormateurController.connectedFormateur.getUtilisateurSoftskills());
+            zd_Role.setValue(ListeFormateurController.connectedFormateur.getUtilisateurRole());
             zd_LOrg.setVisible(true);
             zd_LFonction.setVisible(true);
             zd_Org.setVisible(true);
@@ -207,10 +264,30 @@ public class AjouterAdminController implements Initializable {
             zd_nomeentrprise.setVisible(false);
             zd_sitewebEntreprise.setVisible(false);
             zd_EntrpreneurUsage.setVisible(false);
-        } else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Entrepreneur)) {
-            zd_Role.setValue(Entrepreneur);
-            zd_LOrg.setVisible(false);
-            zd_LFonction.setVisible(false);
+            u = ListeFormateurController.connectedFormateur;
+            ListeFormateurController.connectedFormateur = null;
+        }
+        while (ListeEntrepreneurController.connectedEntrepreneur != null) {
+            java.sql.Date r;
+            r = new java.sql.Date(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurDDN().getTime());
+            LocalDate date = r.toLocalDate();
+            zd_nom.setText(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurNom());
+            zd_prenom.setText(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurPrenom());
+            zd_adresse.setText(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurAddress());
+            zd_pays.setText(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurPays());
+            if (ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurGenre().equals("homme")) {
+                zd_genre.selectToggle(zd_homme);
+            } else if (ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurGenre().equals("femme")) {
+                zd_genre.selectToggle(zd_femme);
+            }
+            zd_Email.setText(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurAddressEmail());
+
+            zd_numtel.setText(String.valueOf(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurphone()));
+            zd_DDN.setValue(date);
+            zd_nomeentrprise.setText(ListeEntrepreneurController.connectedEntrepreneur.getNomEntreprise());
+            zd_sitewebEntreprise.setText(ListeEntrepreneurController.connectedEntrepreneur.getEntrepreneurSiteWeb());
+            zd_EntrpreneurUsage.setText(ListeEntrepreneurController.connectedEntrepreneur.getEntrepreneurUsage());
+            zd_Role.setValue(ListeEntrepreneurController.connectedEntrepreneur.getUtilisateurRole());
             zd_Org.setVisible(false);
             zd_Fonction.setVisible(false);
             zd_LSoftSkills.setVisible(false);
@@ -221,13 +298,69 @@ public class AjouterAdminController implements Initializable {
             zd_nomeentrprise.setVisible(true);
             zd_sitewebEntreprise.setVisible(true);
             zd_EntrpreneurUsage.setVisible(true);
+            u = ListeEntrepreneurController.connectedEntrepreneur;
+            ListeEntrepreneurController.connectedEntrepreneur = null;
         }
-        zd_Org.setText(AuthentificationController.connectedUser.getUtilisateurOrganisme());
-        zd_Fonction.setText(AuthentificationController.connectedUser.getUtilisateurFonction());
-        zd_softskills.setText(AuthentificationController.connectedUser.getUtilisateurSoftskills());
-        zd_nomeentrprise.setText(AuthentificationController.connectedUser.getNomEntreprise());
-        zd_sitewebEntreprise.setText(AuthentificationController.connectedUser.getEntrepreneurSiteWeb());
-        zd_EntrpreneurUsage.setText(AuthentificationController.connectedUser.getEntrepreneurUsage());
+        zd_Role.setOnAction(e -> {
+            if (Membre.equals(zd_Role.getValue())) {
+                zd_Role.setValue(Membre);
+                zd_LOrg.setVisible(true);
+                zd_LFonction.setVisible(true);
+                zd_Org.setVisible(true);
+                zd_Fonction.setVisible(true);
+                zd_LSoftSkills.setVisible(false);
+                zd_softskills.setVisible(false);
+                zd_Lnomeentrprise.setVisible(false);
+                zd_LsitewebEntreprise.setVisible(false);
+                zd_LEntrpreneurUsage.setVisible(false);
+                zd_nomeentrprise.setVisible(false);
+                zd_sitewebEntreprise.setVisible(false);
+                zd_EntrpreneurUsage.setVisible(false);
+            } else if (Formateur.equals(zd_Role.getValue())) {
+                zd_Role.setValue(Formateur);
+                zd_LOrg.setVisible(true);
+                zd_LFonction.setVisible(true);
+                zd_Org.setVisible(true);
+                zd_Fonction.setVisible(true);
+                zd_LSoftSkills.setVisible(true);
+                zd_softskills.setVisible(true);
+                zd_Lnomeentrprise.setVisible(false);
+                zd_LsitewebEntreprise.setVisible(false);
+                zd_LEntrpreneurUsage.setVisible(false);
+                zd_nomeentrprise.setVisible(false);
+                zd_sitewebEntreprise.setVisible(false);
+                zd_EntrpreneurUsage.setVisible(false);
+            } else if (Admin.equals(zd_Role.getValue())) {
+                zd_Role.setValue(Admin);
+                zd_LOrg.setVisible(false);
+                zd_LFonction.setVisible(false);
+                zd_Org.setVisible(false);
+                zd_Fonction.setVisible(false);
+                zd_LSoftSkills.setVisible(false);
+                zd_softskills.setVisible(false);
+                zd_Lnomeentrprise.setVisible(false);
+                zd_LsitewebEntreprise.setVisible(false);
+                zd_LEntrpreneurUsage.setVisible(false);
+                zd_nomeentrprise.setVisible(false);
+                zd_sitewebEntreprise.setVisible(false);
+                zd_EntrpreneurUsage.setVisible(false);
+            } else if (Entrepreneur.equals(zd_Role.getValue())) {
+                zd_Role.setValue(Entrepreneur);
+                zd_LOrg.setVisible(false);
+                zd_LFonction.setVisible(false);
+                zd_Org.setVisible(false);
+                zd_Fonction.setVisible(false);
+                zd_LSoftSkills.setVisible(false);
+                zd_softskills.setVisible(false);
+                zd_Lnomeentrprise.setVisible(true);
+                zd_LsitewebEntreprise.setVisible(true);
+                zd_LEntrpreneurUsage.setVisible(true);
+                zd_nomeentrprise.setVisible(true);
+                zd_sitewebEntreprise.setVisible(true);
+                zd_EntrpreneurUsage.setVisible(true);
+            }
+
+        });
 
         zd_Modifier.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -237,31 +370,37 @@ public class AjouterAdminController implements Initializable {
                         = java.util.Date.from(zd_DDN.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
                 java.sql.Date sqlDate = new java.sql.Date(date.getTime());
                 //ToggleGroup genre = new ToggleGroup();
-                if ((zd_Mdp.getText().equals(zd_CMdp.getText()))) {
-                    if (Membre.equals(zd_Role.getValue())) {
-                        if (Membre.equals(zd_Role.getValue())) {
-                            if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
-                                    || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
-                                    || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("")) {
-                                Alert a = new Alert(Alert.AlertType.WARNING);
-                                a.setContentText("Please fill all fields ");
-                                a.setHeaderText(null);
-                                a.showAndWait();
+               
+                    if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
+                            || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
+                            || zd_pays.getText().equals("") || zd_Email.getText().equals("")) {
+                        Alert a = new Alert(Alert.AlertType.WARNING);
+                        a.setContentText("svp remplir tous le formulaire  ");
+                        a.setHeaderText(null);
+                        a.showAndWait();
 
-                            } else {
+                    } else {
+                        if (zd_Role.getValue().equals(Admin)) {
+                            
+                           // if (zd_Mdp.getText().equals(null)) {
+                           
                                 try {
-                                    Membre p = new Membre(AuthentificationController.connectedUser.getUtilisateurID(), AuthentificationController.connectedUser.getUtilisateurphone(), AuthentificationController.connectedUser.getUtilisateurPdp(), AuthentificationController.connectedUser.getUtilisateurNom(),
-                                            AuthentificationController.connectedUser.getUtilisateurPrenom(), AuthentificationController.connectedUser.getUtilisateurAddress(), AuthentificationController.connectedUser.getUtilisateurPays(),
-                                            AuthentificationController.connectedUser.getUtilisateurGenre(), AuthentificationController.connectedUser.getUtilisateurAddressEmail(),
-                                            AuthentificationController.connectedUser.getUtilisateurMDP(), AuthentificationController.connectedUser.getUtilisateurRole(), AuthentificationController.connectedUser.getUtilisateurOrganisme(),
-                                            AuthentificationController.connectedUser.getUtilisateurFonction(), AuthentificationController.connectedUser.getUtilisateurDDN());
-                                    System.out.println(p.toString());
-                                    Membre p1 = new Membre(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
+                                    Admin p1 = new Admin(zd_Pdppath.getText(),Integer.parseInt(zd_numtel.getText()), zd_nom.getText(), zd_prenom.getText(),
                                             zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                            zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), sqlDate);
+                                            zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_softskills.getText(), zd_nomeentrprise.getText(), zd_sitewebEntreprise.getText(), zd_EntrpreneurUsage.getText(), sqlDate);
                                     System.out.println(p1.toString());
-
-                                    ms.modifierMembre(p1, p);
+                                    System.out.println(".handle()"+u.toString());
+                                    System.out.println(".handle()"+m.toString());
+                                        if(u.getUtilisateurRole().equals(Membre))
+                                    as.modifierAdminFormateur(p1, u);
+                                        if(u.getUtilisateurRole().equals(Formateur))
+                                    as.modifierAdminEntrepreneur(p1, u);
+                                        if(u.getUtilisateurRole().equals(Entrepreneur))
+                                    as.modifierAdminMembre(p1, u);
+                                        
+                                    System.out.println(".handle()"+m.toString());
+                                    
+                                   
                                     Alert a = new Alert(Alert.AlertType.WARNING);
                                     a.setContentText("votre donnée ont été bien modifier ");
                                     a.setHeaderText(null);
@@ -271,125 +410,11 @@ public class AjouterAdminController implements Initializable {
                                 } catch (NoSuchAlgorithmException ex) {
                                     Logger.getLogger(AjouterAdminController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            }
-
                         }
-                    } else if (Formateur.equals(zd_Role.getValue())) {
-                        if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
-                                || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
-                                || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("") ) {
-                            Alert a = new Alert(Alert.AlertType.WARNING);
-                            a.setContentText("Please fill all fields ");
-                            a.setHeaderText(null);
-                            a.showAndWait();
-
-                        } else {
-                            try {
-                                Formateur p = new Formateur(AuthentificationController.connectedUser.getUtilisateurID(), AuthentificationController.connectedUser.getUtilisateurphone(), AuthentificationController.connectedUser.getUtilisateurPdp(), AuthentificationController.connectedUser.getUtilisateurNom(),
-                                        AuthentificationController.connectedUser.getUtilisateurPrenom(), AuthentificationController.connectedUser.getUtilisateurAddress(), AuthentificationController.connectedUser.getUtilisateurPays(),
-                                        AuthentificationController.connectedUser.getUtilisateurGenre(), AuthentificationController.connectedUser.getUtilisateurAddressEmail(),
-                                        AuthentificationController.connectedUser.getUtilisateurMDP(), AuthentificationController.connectedUser.getUtilisateurRole(), AuthentificationController.connectedUser.getUtilisateurOrganisme(),
-                                        AuthentificationController.connectedUser.getUtilisateurFonction(), AuthentificationController.connectedUser.getUtilisateurSoftskills(), AuthentificationController.connectedUser.getUtilisateurDDN());
-                                System.out.println(p.toString());
-                                Formateur p1 = new Formateur(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
-                                        zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                        zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_softskills.getText(), sqlDate);
-                                System.out.println(p1.toString());
-
-                                fs.modifierFormateur(p1, p);
-                                Alert a = new Alert(Alert.AlertType.WARNING);
-                                a.setContentText("votre donnée ont été bien modifier ");
-                                a.setHeaderText(null);
-                                a.showAndWait();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(AjouterAdminController.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NoSuchAlgorithmException ex) {
-                                Logger.getLogger(AjouterAdminController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        }
-
-                    } else if (Entrepreneur.equals(zd_Role.getValue())) {
-                        if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
-                                || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
-                                || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("") ) {
-                            Alert a = new Alert(Alert.AlertType.WARNING);
-                            a.setContentText("Please fill all fields ");
-                            a.setHeaderText(null);
-                            a.showAndWait();
-
-                        } else {
-                            try {
-                                Entrepreneur p = new Entrepreneur(AuthentificationController.connectedUser.getUtilisateurID(), AuthentificationController.connectedUser.getUtilisateurphone(), AuthentificationController.connectedUser.getUtilisateurPdp(), AuthentificationController.connectedUser.getUtilisateurNom(),
-                                        AuthentificationController.connectedUser.getUtilisateurPrenom(), AuthentificationController.connectedUser.getUtilisateurAddress(), AuthentificationController.connectedUser.getUtilisateurPays(),
-                                        AuthentificationController.connectedUser.getUtilisateurGenre(), AuthentificationController.connectedUser.getUtilisateurAddressEmail(),
-                                        AuthentificationController.connectedUser.getUtilisateurMDP(), AuthentificationController.connectedUser.getUtilisateurRole(), AuthentificationController.connectedUser.getUtilisateurOrganisme(),
-                                        AuthentificationController.connectedUser.getUtilisateurFonction(), AuthentificationController.connectedUser.getNomEntreprise(), AuthentificationController.connectedUser.getEntrepreneurSiteWeb(),
-                                        AuthentificationController.connectedUser.getEntrepreneurUsage(), AuthentificationController.connectedUser.getUtilisateurDDN());
-                                System.out.println(p.toString());
-                                Entrepreneur p1 = new Entrepreneur(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
-                                        zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                        zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_nomeentrprise.getText(), zd_sitewebEntreprise.getText(), zd_EntrpreneurUsage.getText(), sqlDate);
-                                System.out.println(p1.toString());
-
-                                es.modifierEntrepreneur(p1, p);
-                                Alert a = new Alert(Alert.AlertType.WARNING);
-                                a.setContentText("votre donnée ont été bien modifier ");
-                                a.setHeaderText(null);
-                                a.showAndWait();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(AjouterAdminController.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NoSuchAlgorithmException ex) {
-                                Logger.getLogger(AjouterAdminController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        }
-
-                    } else if (Admin.equals(zd_Role.getValue())) {
-                        if (zd_nom.getText().equals("") || zd_prenom.getText().equals("")
-                                || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
-                                || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("") ) {
-                            Alert a = new Alert(Alert.AlertType.WARNING);
-                            a.setContentText("Please fill all fields ");
-                            a.setHeaderText(null);
-                            a.showAndWait();
-
-                        } else {
-
-                            try {
-                                Admin p = new Admin(AuthentificationController.connectedUser.getUtilisateurID(), AuthentificationController.connectedUser.getUtilisateurphone(), AuthentificationController.connectedUser.getUtilisateurPdp(), AuthentificationController.connectedUser.getUtilisateurNom(),
-                                        AuthentificationController.connectedUser.getUtilisateurPrenom(), AuthentificationController.connectedUser.getUtilisateurAddress(), AuthentificationController.connectedUser.getUtilisateurPays(),
-                                        AuthentificationController.connectedUser.getUtilisateurGenre(), AuthentificationController.connectedUser.getUtilisateurAddressEmail(),
-                                        AuthentificationController.connectedUser.getUtilisateurMDP(), AuthentificationController.connectedUser.getUtilisateurRole(), AuthentificationController.connectedUser.getUtilisateurOrganisme(),
-                                        AuthentificationController.connectedUser.getUtilisateurFonction(), AuthentificationController.connectedUser.getUtilisateurSoftskills(), AuthentificationController.connectedUser.getNomEntreprise(), AuthentificationController.connectedUser.getEntrepreneurSiteWeb(),
-                                        AuthentificationController.connectedUser.getEntrepreneurUsage(), AuthentificationController.connectedUser.getUtilisateurDDN());
-                                System.out.println(p.toString());
-                                Admin p1 = new Admin(Integer.parseInt(zd_numtel.getText()), zd_Pdppath.getText(), zd_nom.getText(), zd_prenom.getText(),
-                                        zd_adresse.getText(), zd_pays.getText(), ((RadioButton) zd_genre.getSelectedToggle()).getText(), zd_Email.getText(),
-                                        zd_Mdp.getText(), zd_Role.getValue(), zd_Org.getText(), zd_Fonction.getText(), zd_softskills.getText(), zd_nomeentrprise.getText(), zd_sitewebEntreprise.getText(), zd_EntrpreneurUsage.getText(), sqlDate);
-                                System.out.println(p1.toString());
-
-                                as.modifierAdmin(p1, p);
-                                Alert a = new Alert(Alert.AlertType.WARNING);
-                                a.setContentText("votre donnée ont été bien modifier ");
-                                a.setHeaderText(null);
-                                a.showAndWait();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(ModifierProfilController.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (NoSuchAlgorithmException ex) {
-                                Logger.getLogger(ModifierProfilController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        }
-
                     }
-
-                } else {
-                    System.out.println("les mot de passe doit etre identique");
-                }
+               
 
             }
-
         });
 
     }
@@ -454,7 +479,8 @@ public class AjouterAdminController implements Initializable {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
     }
-     @FXML
+
+    @FXML
     private void retour(ActionEvent event) throws IOException {
         try {
             Parent page1 = FXMLLoader.load(getClass().getResource("/view/Acceuil.fxml"));

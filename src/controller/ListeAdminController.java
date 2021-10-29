@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 import entities.Admin;
 import entities.Formateur;
 import entities.Membre;
+import entities.Utilisateur;
 import java.security.NoSuchAlgorithmException;
 import services.AdminService;
 import services.FormateurService;
@@ -46,7 +47,7 @@ import services.MembreService;
  * @author lahbib
  */
 public class ListeAdminController implements Initializable {
-
+    public static Admin connectedAdmin;
     @FXML
     private TableView<Admin> zd_tableAdmin;
     @FXML
@@ -204,8 +205,23 @@ public class ListeAdminController implements Initializable {
     private void mofiierAdmin(ActionEvent event) {
     
             
-        
+        int id = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurID();
+        String Nom = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurNom();
+        String Prenom = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurPrenom();
+        String Pdp = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurPdp();
+        String genre = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurGenre();
+        String role = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurRole();
+        String address = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurAddress();
+        String pays = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurPays();
+        String email = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurAddressEmail();
+        java.util.Date ddn = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurDDN();
+        String fonction = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurFonction();
+        String org = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurOrganisme();
+        int phone = zd_tableAdmin.getSelectionModel().getSelectedItem().getUtilisateurphone();
+        Admin m1 = new Admin(id, phone, Pdp, Nom, Prenom, address, pays, genre, email, role, ddn);
+        ListeAdminController.connectedAdmin = m1;
         try {
+            
             Parent page2 = FXMLLoader.load(getClass().getResource("/view/AjouterAdmin.fxml"));
             Scene scene2 = zd_modfier.getScene();
             scene2.setRoot(page2);

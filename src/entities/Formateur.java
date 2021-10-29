@@ -25,7 +25,23 @@ public class Formateur extends Utilisateur {
         super(utilisateurNom, utilisateurPrenom);
     }
 
+    public Formateur(int utilisateurID, int utilisateurphone, String utilisateurPdp, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, String utilisateurSoftskills) {
+        super(utilisateurID, utilisateurphone, utilisateurPdp, utilisateurNom, utilisateurPrenom, utilisateurAddress, utilisateurPays, utilisateurGenre, utilisateurAddressEmail, utilisateurRole, utilisateurOrganisme, utilisateurFonction, utilisateurSoftskills);
+    }
+
+    public Formateur(int utilisateurID, String utilisateurPdp, int utilisateurphone, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, String utilisateurSoftskills, Date utilisateurDDN) {
+        super(utilisateurID, utilisateurPdp, utilisateurphone, utilisateurNom, utilisateurPrenom, utilisateurAddress, utilisateurPays, utilisateurGenre, utilisateurAddressEmail, utilisateurRole, utilisateurOrganisme, utilisateurFonction, utilisateurSoftskills, utilisateurDDN);
+    }
+
+    public Formateur(String utilisateurPdp, int utilisateurphone, String utilisateurNom, String utilisateurPrenom, String utilisateurAddress, String utilisateurPays, String utilisateurGenre, String utilisateurAddressEmail, String utilisateurSoftskills, String utilisateurRole, String utilisateurOrganisme, String utilisateurFonction, Date utilisateurDDN) {
+        super(utilisateurPdp, utilisateurphone, utilisateurNom, utilisateurPrenom, utilisateurAddress, utilisateurPays, utilisateurGenre, utilisateurAddressEmail, utilisateurSoftskills, utilisateurRole, utilisateurOrganisme, utilisateurFonction, utilisateurDDN);
+    }
+
     public Formateur() {
+    }
+
+    public Formateur(String utilisateurNom) {
+        super(utilisateurNom);
     }
 
     

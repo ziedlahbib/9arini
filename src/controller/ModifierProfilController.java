@@ -163,7 +163,7 @@ public class ModifierProfilController implements Initializable {
         EntrepreneurService es = new EntrepreneurService();
        
         zd_nom.setText(AuthentificationController.connectedUser.getUtilisateurNom());
-        zd_prenom.setText(AuthentificationController.connectedUser.getUtilisateurNom());
+        zd_prenom.setText(AuthentificationController.connectedUser.getUtilisateurPrenom());
         zd_adresse.setText(AuthentificationController.connectedUser.getUtilisateurAddress());
         zd_pays.setText(AuthentificationController.connectedUser.getUtilisateurPays());
         if (AuthentificationController.connectedUser.getUtilisateurGenre().equals("homme")) {
@@ -189,8 +189,8 @@ public class ModifierProfilController implements Initializable {
             zd_nomeentrprise.setVisible(false);
             zd_sitewebEntreprise.setVisible(false);
             zd_EntrpreneurUsage.setVisible(false);
-/*
-        } else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Admin)) {
+            
+        }else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Admin)) {
             zd_Role.setValue(Admin);
             zd_LOrg.setVisible(false);
             zd_LFonction.setVisible(false);
@@ -203,7 +203,7 @@ public class ModifierProfilController implements Initializable {
             zd_LEntrpreneurUsage.setVisible(false);
             zd_nomeentrprise.setVisible(false);
             zd_sitewebEntreprise.setVisible(false);
-            zd_EntrpreneurUsage.setVisible(false);*/
+            zd_EntrpreneurUsage.setVisible(false);
         } else if (AuthentificationController.connectedUser.getUtilisateurRole().equals(Formateur)) {
             zd_Role.setValue(Formateur);
             zd_LOrg.setVisible(true);
@@ -255,7 +255,7 @@ public class ModifierProfilController implements Initializable {
                                     || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
                                     || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("")) {
                                 Alert a = new Alert(Alert.AlertType.WARNING);
-                                a.setContentText("Please fill all fields ");
+                                a.setContentText("svp remplir tout le formulaire ");
                                 a.setHeaderText(null);
                                 a.showAndWait();
 
@@ -290,7 +290,7 @@ public class ModifierProfilController implements Initializable {
                                 || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
                                 || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("") ) {
                             Alert a = new Alert(Alert.AlertType.WARNING);
-                            a.setContentText("Please fill all fields ");
+                            a.setContentText("svp remplir tout le formulaire ");
                             a.setHeaderText(null);
                             a.showAndWait();
 
@@ -325,7 +325,7 @@ public class ModifierProfilController implements Initializable {
                                 || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
                                 || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("") ) {
                             Alert a = new Alert(Alert.AlertType.WARNING);
-                            a.setContentText("Please fill all fields ");
+                            a.setContentText("svp remplir tout le formulaire ");
                             a.setHeaderText(null);
                             a.showAndWait();
 
@@ -362,7 +362,7 @@ public class ModifierProfilController implements Initializable {
                                 || zd_numtel.getText().equals("") || zd_adresse.getText().equals("")
                                 || zd_pays.getText().equals("") || zd_Email.getText().equals("") || zd_Mdp.getText().equals("") || zd_CMdp.getText().equals("") ) {
                             Alert a = new Alert(Alert.AlertType.WARNING);
-                            a.setContentText("Please fill all fields ");
+                            a.setContentText("svp remplir tout le formulaire ");
                             a.setHeaderText(null);
                             a.showAndWait();
 
