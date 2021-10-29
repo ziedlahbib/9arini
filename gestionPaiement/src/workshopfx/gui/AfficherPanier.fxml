@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@gestionPaiement.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="workshopfx.ui.AfficherPanierController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="339.0" prefWidth="527.0" VBox.vgrow="ALWAYS">
+         <children>
+            <ImageView fitHeight="400.0" fitWidth="652.0" layoutX="1.0">
+               <image>
+                  <Image url="@afficherPanierBG.jpg" />
+               </image>
+            </ImageView>
+            <ListView fx:id="listCommandes" layoutX="118.0" layoutY="144.0" prefHeight="241.0" prefWidth="420.0" />
+            <Button fx:id="btnPayerPanier" layoutX="537.0" layoutY="69.0" mnemonicParsing="false" onAction="#payerPanier" prefHeight="53.0" prefWidth="53.0">
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0">
+                     <image>
+                        <Image url="@purchaseIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="btnRetourPanier" layoutX="14.0" layoutY="29.0" mnemonicParsing="false" onAction="#ajouterCommande" prefHeight="40.0" prefWidth="40.0">
+                <graphic>
+                    <ImageView fitHeight="60.0" fitWidth="60.0">
+                     <image>
+                        <Image url="@backIcon.png" />
+                     </image>
+                  </ImageView>
+                </graphic>
+            </Button>
+            <fx:define>
+                <Image fx:id="imgRetourPanier" url="@backIcon.png" />
+            </fx:define>
+            <fx:define>
+                <Image fx:id="imgFermerPanier" url="@closeIcon.png" />
+            </fx:define>
+         </children>
+    </AnchorPane>
+  </children>
+</VBox>
